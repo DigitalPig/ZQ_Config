@@ -3,17 +3,17 @@ set guicursor+=n-v-c:blinkon0
 set colorcolumn=80,120
 filetype on
 filetype plugin on
-let mapleader = ","
+let mapleader = ";"
 " Default localleader to the leader currently
 let maplocalleader = "\\"
 
 
-if !filereadable('~/.config/nvim/plugged/plug.vim')
-  silent !curl --insecure -fLo ~/.config/nvim/plugged/plug.vim
+if !filereadable('/home/digitalpig/.config/nvim/plugged/plug.vim')
+  silent !curl --insecure -fLo /home/digitalpig/.config/nvim/plugged/plug.vim
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-source ~/.config/nvim/plugged/plug.vim
+source /home/digitalpig/.config/nvim/plugged/plug.vim
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'vim-airline/vim-airline'
@@ -36,14 +36,24 @@ else
 endif
 Plug 'lighttiger2505/deoplete-vim-lsp'
 Plug 'airblade/vim-gitgutter'
-Plug 'Shougo/neosnippet.vim'
+"Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/denite.nvim'
-" Plug 'tpope/vim-fugitive'
 Plug 'lambdalisue/gina.vim'
+
+" MIT Scheme
+Plug 'vim-scripts/paredit.vim', { 'for': ['scheme', 'lisp', 'racket'] }
+Plug 'sjl/tslime.vim'
+
+" You'll need vim-sexp too for selecting forms.
+"Plug 'guns/vim-sexp'
+
+" And while you're here, tpope's bindings make vim-sexp a little nicer to use.
+"Plug 'tpope/vim-sexp-mappings-for-regular-people'
+
 
 " Kubernetes
 Plug 'c9s/helper.vim'
@@ -82,7 +92,20 @@ Plug 'bfredl/nvim-ipy'
 Plug 'luochen1990/rainbow'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+"Plug 'psf/black'
+
+" Leetcode
+Plug 'ianding1/leetcode.vim'
+
+" Python docstring
+Plug 'pixelneo/vim-python-docstring'
+
+
+" Snippet support
+Plug 'SirVer/ultisnips'
+
+" Snippet collection
+Plug 'honza/vim-snippets'
 call plug#end()
 
 " Enable omni completion.
@@ -114,10 +137,8 @@ let g:rainbow_active=1
 set hidden
 
 "imap <c-space> <Plug>(asyncomplete_force_refresh)
-"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
-"autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
 
 function ChangeCondaEnv()
     CondaChangeEnv
@@ -193,7 +214,7 @@ let g:tex_conceal='abdmg'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size=1
 let g:lsp_auto_enable=1
-set completeopt+=preview
+"set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:default_julia_version = "current"
 
@@ -242,3 +263,40 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
+" Debug julia LSP
+let g:lsp_log_verbose = 0
+let g:lsp_log_file = expand('~/vim-lsp.log')
+
+" Leetcode setup
+nnoremap <leader>ll :LeetCodeList<cr>
+nnoremap <leader>lt :LeetCodeTest<cr>
+nnoremap <leader>ls :LeetCodeSubmit<cr>
+nnoremap <leader>li :LeetCodeSignIn<cr>
+
+let g:leetcode_solution_filetype="python3"
+let g:leetcode_username="digitalpig"
+let g:leetcode_browser="firefox"
+
+" MIT Scheme
+" Format the indentation
+autocmd filetype lisp,scheme,art,racket setlocal equalprg=scmindent.rkt
+let g:tslime_ensure_trailing_newlines = 1
+let g:tslime_normal_mapping = '<localleader>t'
+let g:tslime_visual_mapping = '<localleader>t'
+let g:tslime_vars_mapping = '<localleader>T'
+" Starts the REPL.
+"let g:paredit_mode = 0
+
+" Bracket motion disable
+"let g:sexp_enable_insert_mode_mappings = 0
+
+" Python docstring
+let g:python_style="numpy"
+
+" Snippet Setting
+let g:UltiSnipsExpandTrigger="<F2>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
