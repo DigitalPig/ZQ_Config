@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +15,7 @@ export ZSH="/home/digitalpig/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -68,7 +75,8 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ansible aws battery terraform doctl)
+plugins=(git battery terraform doctl python fzf kubectl 
+    kubectx docker podman ubuntu doctl skaffold terraform vscode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -100,17 +108,85 @@ source $ZSH/oh-my-zsh.sh
 #
 # Old Bash Profile
 
-. /opt/anaconda3/etc/profile.d/conda.sh
-
-
 # Setup for Spark
 SPARK_HOME=/opt/spark
-export PATH=$SPARK_HOME/bin:/opt/zeppelin/bin:$PATH
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
+export PATH=/home/digitalpig/.local/bin:/snap/bin:$SPARK_HOME/bin:/opt/zeppelin/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 # Spark OPTS can change
-export SPARK_OPTS='--jars /home/digitalpig/Coding/xgboost/jvm-packages/xgboost4j-spark/target/xgboost4j-spark-0.7-jar-with-dependencies.jar --packages ai.h2o:sparkling-water-package_2.11:2.2.10' 
+#export SPARK_OPTS='--jars /home/digitalpig/Coding/xgboost/jvm-packages/xgboost4j-spark/target/xgboost4j-spark-0.7-jar-with-dependencies.jar' 
+export PYSPARK_PYTHON=python3
+#export PYSPARK_DRIVER_PYTHON=jupyter
+#export PYSPARK_DRIVER_PYTHON_OPTS="console"
+#export SPARK_SUBMIT_OPTIONS=$SPARK_OPTS
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+# Julia thread setting
+export JULIA_NUM_THREADS=3
+#alias docker="podman"
+alias python="python3"
+
+# Julia MXNet setup
+#export MXNET_HOME=$HOME/Codes/incubator-mxnet
+#export LD_LIBRARY_PATH=$HOME/Codes/incubator-mxnet/build:/usr/lib:$LD_LIBRARY_PATH
+#export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so:$LD_PRELOAD
+
+# Spark Conf
+SPARK_HOME=/opt/spark
+export PATH=$SPARK_HOME/bin:/opt/zeppelin/bin:$PATH #:/opt/gurobi/linux64/bin
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+# Spark OPTS can change
+#export SPARK_OPTS='--jars /home/digitalpig/Coding/xgboost/jvm-packages/xgboost4j-spark/target/xgboost4j-spark-0.7-jar-with-dependencies.jar --packages ai.h2o:sparkling-water-package_2.11:2.2.10' 
 export PYSPARK_PYTHON=/opt/anaconda3/bin/python
-export PYSPARK_DRIVER_PYTHON=/opt/anaconda3/bin/jupyter
-export PYSPARK_DRIVER_PYTHON_OPTS="console"
+#export PYSPARK_DRIVER_PYTHON=/opt/anaconda3/bin/jupyter
+#export PYSPARK_DRIVER_PYTHON_OPTS="console"
 export SPARK_SUBMIT_OPTIONS=$SPARK_OPTS
 
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/linuxbrew/.linuxbrew/Cellar/vault/1.3.4/bin/vault vault
+
+# Some alias
+alias sicp="racket -l r5rs -l sicp --repl"
+
+# Gurobi Setup
+export GUROBI_HOME="/opt/gurobi/linux64"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
+
+# DigitalOcean Personal Token
+#
+# Digital Ocean Team
+
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias vi=nvim
+# Duolingo password 
+export DUOLINGO_PASSWORD=XxET7pEDciKiZr
+
+# PKG-config path
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig:/usr/lib/pkgconfig
+
+export QT_IM_MODULE=fcitx
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/opt/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/opt/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/opt/mambaforge/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
+alias conda=mamba
+export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/fzf
