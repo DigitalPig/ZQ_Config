@@ -125,8 +125,9 @@ Plug 'psf/black'
 " Leetcode
 Plug 'ianding1/leetcode.vim'
 
-" Python docstring
+" Python related
 Plug 'pixelneo/vim-python-docstring'
+Plug '3rd/image.nvim'
 
 " Copilot
 Plug 'github/copilot.vim'
@@ -143,6 +144,8 @@ Plug 'timonv/vim-cargo'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mfussenegger/nvim-dap'
 Plug 'puremourning/vimspector'
+Plug 'Vigemus/iron.nvim'
+
 
 " Quarto
 Plug 'quarto-dev/quarto-nvim',
@@ -154,6 +157,10 @@ Plug 'hrsh7th/nvim-cmp',
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+
 
 " Terminals
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
@@ -285,16 +292,7 @@ let g:lsp_auto_enable=1
 "    \ })
 
 
-" Deoplete
-"
-"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-"set completeopt=longest,preview
-
 let g:lsp_highlights_enabled=1
-"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-"nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " VIM-Ipython setup
 let g:nvim_ipy_perform_mappings=0
@@ -304,86 +302,6 @@ nmap <silent> <leader>pt <Plug>(IPy-Terminate)
 
 let g:ipy_celldef = '^#\s*-+$'
 map <silent> <leader>pc <Plug>(IPy-RunCell)
-
-" Gina Airline setup
-"call airline#parts#define_function('gina', 'gina#component#repo#branch')
-"let g:airline_section_b = airline#section#create(['hunks', g:airline_symbols.branch,'gina'])
-
-" Vimfiler setup
-"
-"let g:vimfiler_as_default_explorer = 1
-"let g:vimfiler_ignore_pattern = ['^\.', '^__pycache__$']
-"autocmd BufEnter * map <f3> :VimFilerExplorer -toggle -simple -winwidth=35<CR>
-"autocmd BufEnter * map <f3> :Defx -toggle -split=vertical -winwidth=28 -direction=topleft<CR>
-"autocmd FileType defx call s:defx_my_settings()
-"	function! s:defx_my_settings() abort
-	  " Define mappings
-"	  nnoremap <silent><buffer><expr> <CR>
-"	  \ defx#do_action('drop')
-"	  nnoremap <silent><buffer><expr> c
-"	  \ defx#do_action('copy')
-"	  nnoremap <silent><buffer><expr> m
-"	  \ defx#do_action('move')
-"	  nnoremap <silent><buffer><expr> p
-"	  \ defx#do_action('paste')
-"	  nnoremap <silent><buffer><expr> l
-"	  \ defx#do_action('drop')
-"	  nnoremap <silent><buffer><expr> V
-"	  \ defx#do_action('drop', 'vsplit')
-"      nnoremap <silent><buffer><expr> s
-"     \ defx#do_action('drop', 'split')
-"	  nnoremap <silent><buffer><expr> P
-"	  \ defx#do_action('open', 'pedit')
-"	  nnoremap <silent><buffer><expr> o
-"	  \ defx#do_action('open_tree', 'toggle')
-"	  nnoremap <silent><buffer><expr> K
-"	  \ defx#do_action('new_directory')
-"	  nnoremap <silent><buffer><expr> N
-"	  \ defx#do_action('new_file')
-"	  nnoremap <silent><buffer><expr> M
-"	  \ defx#do_action('new_multiple_files')
-"	  nnoremap <silent><buffer><expr> C
-"	  \ defx#do_action('toggle_columns',
-"	  \                'mark:indent:icon:filename:type:size:time')
-"	  nnoremap <silent><buffer><expr> S
-"	  \ defx#do_action('toggle_sort', 'time')
-"	  nnoremap <silent><buffer><expr> d
-"	  \ defx#do_action('remove')
-"	  nnoremap <silent><buffer><expr> r
-"	  \ defx#do_action('rename')
-"	  nnoremap <silent><buffer><expr> !
-"	  \ defx#do_action('execute_command')
-"	  nnoremap <silent><buffer><expr> x
-"	  \ defx#do_action('execute_system')
-"	  nnoremap <silent><buffer><expr> yy
-"	  \ defx#do_action('yank_path')
-"	  nnoremap <silent><buffer><expr> .
-"	  \ defx#do_action('toggle_ignored_files')
-"	  nnoremap <silent><buffer><expr> ;
-"	  \ defx#do_action('repeat')
-"	  nnoremap <silent><buffer><expr> h
-"	  \ defx#do_action('cd', ['..'])
-"	  nnoremap <silent><buffer><expr> ~
-"	  \ defx#do_action('cd')
-"	  nnoremap <silent><buffer><expr> q
-"	  \ defx#do_action('quit')
-"	  nnoremap <silent><buffer><expr> <Space>
-"	  \ defx#do_action('toggle_select') . 'j'
-"	  nnoremap <silent><buffer><expr> *
-"	  \ defx#do_action('toggle_select_all')
-"	  nnoremap <silent><buffer><expr> j
-"	  \ line('.') == line('$') ? 'gg' : 'j'
-"	  nnoremap <silent><buffer><expr> k
-"	  \ line('.') == 1 ? 'G' : 'k'
-"	  nnoremap <silent><buffer><expr> <C-l>
-"	  \ defx#do_action('redraw')
-"	  nnoremap <silent><buffer><expr> <C-g>
-"	  \ defx#do_action('print')
-"	  nnoremap <silent><buffer><expr> cd
-"	  \ defx#do_action('change_vim_cwd')
-"  endfunction
-
-
 
 
 " Clipboard
@@ -460,6 +378,21 @@ let g:vimspector_base_dir = '/home/digitalpig/.config/nvim/plugged/vimspector'
 nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
+
+" Telescope setup 
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>sf <cmd>Telescope git_files<cr>
+nnoremap <leader>ss <cmd>Telescope lsp_document_symbols<cr>
+nnoremap <leader>sw <cmd>Telescope lsp_workspace_symbols<cr>
+nnoremap <leader>fe <cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>
+
+
+
+" Begining of LUA section setup
 
 lua << EOF
 
@@ -677,6 +610,137 @@ require("nvim-treesitter.configs").setup({
     ) 
 
 require("ibl").setup()
+
+require("telescope").setup{
+    extensions = {
+      fzf = {
+        fuzzy = true,
+        override_generic_sorter = true,
+        override_file_sorter = true,
+        case_mode = "smart_case"
+      }
+      }}
+
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
+
+-- File managers
+require("telescope").setup {
+  extensions = {
+    file_browser = {
+      theme = "ivy",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      hidden = { file_browser = false, folder_browser = true },
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
+    },
+  },
+}
+-- To get telescope-file-browser loaded and working with telescope,
+-- you need to call load_extension, somewhere after setup function:
+require("telescope").load_extension "file_browser"
+
+
+-- default config
+require("image").setup({
+  backend = "kitty",
+  integrations = {
+    markdown = {
+      enabled = true,
+      clear_in_insert_mode = false,
+      download_remote_images = true,
+      only_render_image_at_cursor = false,
+      filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+    },
+    neorg = {
+      enabled = true,
+      clear_in_insert_mode = false,
+      download_remote_images = true,
+      only_render_image_at_cursor = false,
+      filetypes = { "norg" },
+    },
+    html = {
+      enabled = false,
+    },
+    css = {
+      enabled = false,
+    },
+  },
+  max_width = nil,
+  max_height = nil,
+  max_width_window_percentage = nil,
+  max_height_window_percentage = 50,
+  window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+  window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+  editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+  tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+  hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
+})
+
+-- Iron is a interactive REPL over Neovim
+
+require("iron.core").setup {
+  config = {
+    -- Whether a repl should be discarded or not
+    scratch_repl = true,
+    -- Your repl definitions come here
+    repl_definition = {
+      sh = {
+        -- Can be a table or a function that
+        -- returns a table (see below)
+        command = {"zsh"}
+      },
+      python = {
+        command = { "python3" },  -- or { "ipython", "--no-autoindent" }
+        format = require("iron.fts.common").bracketed_paste_python
+      }
+    },
+    -- How the repl window will be displayed
+    -- See below for more information
+    repl_open_cmd = require('iron.view').split.rightbelow(0.25)
+  },
+  -- Iron doesn't set keymaps by default anymore.
+  -- You can set them here or manually add keymaps to the functions in iron.core
+  keymaps = {
+    send_motion = "<space>sc",
+    visual_send = "<space>sc",
+    send_file = "<space>sf",
+    send_line = "<space>sl",
+    send_paragraph = "<space>sp",
+    send_until_cursor = "<space>su",
+    send_mark = "<space>sm",
+    mark_motion = "<space>mc",
+    mark_visual = "<space>mc",
+    remove_mark = "<space>md",
+    cr = "<space>s<cr>",
+    interrupt = "<space>s<space>",
+    exit = "<space>sq",
+    clear = "<space>cl",
+  },
+  -- If the highlight is on, you can change how it looks
+  -- For the available options, check nvim_set_hl
+  highlight = {
+    italic = true
+  },
+  ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+}
+
+-- iron also has a list of commands, see :h iron-commands for all available commands
+vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
+vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
+vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
+vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+
+-- Buffer line
+
+require("bufferline").setup{}
 
 EOF
 
