@@ -1,4 +1,19 @@
-channel_priority: strict
+auto_activate_base: false
 channels:
   - conda-forge
   - defaults
+create_default_packages:
+  - pip
+  - ipython
+  - blas=*=openblas
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - seaborn
+  - neovim
+  - jupyter_client
+  - ipykernel
+  - cairosvg
+  - debugpy
+

@@ -7,7 +7,6 @@ let mapleader = ";"
 " Default localleader to the leader currently
 let maplocalleader = "\\"
 
-
 if !filereadable('/home/digitalpig/.config/nvim/plugged/plug.vim')
   silent !curl --insecure -fLo /home/digitalpig/.config/nvim/plugged/plug.vim
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -18,48 +17,19 @@ source /home/digitalpig/.config/nvim/plugged/plug.vim
 call plug#begin('~/.config/nvim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'morhetz/gruvbox'
 Plug 'folke/tokyonight.nvim', {'branch': 'main'}
-" Plug 'cjrh/vim-conda'
-" Plug 'scrooloose/nerdtree'
-" Plug 'jistr/vim-nerdtree-tabs'
 Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
 Plug 'jalvesaq/Nvim-R'
 Plug 'jalvesaq/vimcmdline'
-"if has('nvim')
-"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-"endif
-"Plug 'lighttiger2505/deoplete-vim-lsp'
 Plug 'airblade/vim-gitgutter'
-"Plug 'Shougo/neosnippet.vim'
-"Plug 'Shougo/neosnippet-snippets'
-"Plug 'Shougo/unite.vim'
-"Plug 'Shougo/vimfiler.vim'
-"Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'Shougo/echodoc.vim'
-"Plug 'Shougo/denite.nvim'
 Plug 'jreybert/vimagit'
-"Plug 'neovim/nvim-lspconfig'
-"Plug 'Shougo/deoplete-lsp'
-"Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " MIT Scheme
 Plug 'vim-scripts/paredit.vim', { 'for': ['scheme', 'lisp', 'racket'] }
 Plug 'jgdavey/tslime.vim'
-
-" You'll need vim-sexp too for selecting forms.
-"Plug 'guns/vim-sexp'
-
-" And while you're here, tpope's bindings make vim-sexp a little nicer to use.
-"Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
 " File Explorer
 Plug 'nvim-tree/nvim-tree.lua'
@@ -103,7 +73,6 @@ Plug 'alfredodeza/pytest.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex'
-"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'morhetz/gruvbox'
 
 Plug 'hashivim/vim-hashicorp-tools'
@@ -129,8 +98,12 @@ Plug 'ianding1/leetcode.vim'
 Plug 'pixelneo/vim-python-docstring'
 Plug '3rd/image.nvim'
 
-" Copilot
-Plug 'github/copilot.vim'
+" Copilot and other code completion process
+" Plug 'github/copilot.vim'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'zbirenbaum/copilot-cmp'
+Plug 'milanglacier/minuet-ai.nvim'
+Plug 'olimorris/codecompanion.nvim'
 
 " Snippet support
 Plug 'SirVer/ultisnips'
@@ -139,11 +112,12 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Rust
-Plug 'simrat39/rust-tools.nvim'
+"Plug 'simrat39/rust-tools.nvim'
+Plug 'mrcjkb/rustaceanvim', {'version': '^5'}
 Plug 'timonv/vim-cargo'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mfussenegger/nvim-dap'
-Plug 'puremourning/vimspector'
+" Plug 'puremourning/vimspector'
 Plug 'Vigemus/iron.nvim'
 
 
@@ -160,6 +134,10 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
 
 
 " Terminals
@@ -169,6 +147,7 @@ Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'stevearc/dressing.nvim'
 call plug#end()
 
 " Enable omni completion.
@@ -370,8 +349,8 @@ nmap <C-c>r <Plug>SetTmuxVars
 
 " Vimspector Settings
 "
-let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_base_dir = '/home/digitalpig/.config/nvim/plugged/vimspector'
+"let g:vimspector_enable_mappings = 'HUMAN'
+"let g:vimspector_base_dir = '/home/digitalpig/.config/nvim/plugged/vimspector'
 " mnemonic 'di' = 'debug inspect' (pick your own, if you prefer!)
 
 " for normal mode - the word under the cursor
@@ -389,6 +368,18 @@ nnoremap <leader>sf <cmd>Telescope git_files<cr>
 nnoremap <leader>ss <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <leader>sw <cmd>Telescope lsp_workspace_symbols<cr>
 nnoremap <leader>fe <cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>
+
+" Debug NVIM-DAP
+nnoremap <silent> <leader>dn :lua require('dap-python').test_method()<CR>
+nnoremap <silent> <leader>df :lua require('dap-python').test_class()<CR>
+nnoremap <silent> <leader>db :lua require('dap').toggle_breakpoint()<CR>
+nnoremap <silent> <F5> :lua require('dap').continue()<CR>
+nnoremap <silent> <S-F5> :lua require('dap').terminate()<CR>
+nnoremap <silent> <F11> :lua require('dap').step_into()<CR>
+nnoremap <silent> <S-F12> :lua require('dap').step_out()<CR>
+nnoremap <silent> <F10> :lua require('dap').step_over()<CR>
+vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
+
 
 
 
@@ -447,9 +438,18 @@ local lsp_flags = {
 }
 
 ----
+require('minuet').setup({
+    provider = 'claude',
+ })
 
   -- Set up nvim-cmp.
   local cmp = require'cmp'
+
+ local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+end
 
   cmp.setup({
     snippet = {
@@ -472,16 +472,29 @@ local lsp_flags = {
       ['<C-m>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<C-l>'] = require('minuet').make_cmp_map(),
+      ["<Tab>"] = vim.schedule_wrap(function(fallback)
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end)
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
+        { name = 'nvim_lsp' },
       { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
+        { name = "copilot"},  
+        --{ name = 'minuet' },
     }, {
       { name = 'buffer' },
-    })
+    }),
+    performance = {
+        fetching_timeout=2000,
+    },
   })
 
   -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
@@ -548,18 +561,18 @@ require('lspconfig')['rust_analyzer'].setup{
 
 require('lspconfig')['julials'].setup{}
 
-local rt = require("rust-tools")
+--local rt = require("rust-tools")
 
-rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<Leader>s", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
+--rt.setup({
+--  server = {
+--    on_attach = function(_, bufnr)
+      -- hover actions
+--      vim.keymap.set("n", "<leader>s", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- code action groups
+--      vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+--    end,
+--  },
+--})
 
 local null_ls = require("null-ls")
 
@@ -673,11 +686,11 @@ require("image").setup({
       enabled = false,
     },
   },
-  max_width = nil,
-  max_height = nil,
-  max_width_window_percentage = nil,
-  max_height_window_percentage = 50,
-  window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+  max_width = 100,
+  max_height = 12,
+  max_width_window_percentage = math.huge,
+  max_height_window_percentage = math.huge,
+  window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
   window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
   editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
   tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
@@ -738,5 +751,75 @@ vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
 vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
 vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
+-- Copilot 
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
+
+require("copilot_cmp").setup()
+require("codecompanion").setup({
+  strategies = {
+    chat = {
+      adapter = "anthropic",
+    },
+    inline = {
+      adapter = "anthropic",
+    },
+    agent = {
+      adapter = "anthropic",
+    },
+  },
+})
+
+require("dressing").setup()
+local dap = require('dap')
+local dapui = require('dapui')
+dap.adapters.codelldb = {
+  type = 'server',
+  port = "${port}",
+  executable = {
+    -- CHANGE THIS to your path!
+    command = '/home/digitalpig/.local/bin/codelldb/extension/adapter/codelldb',
+    args = {"--port", "${port}"},
+
+    -- On windows you may have to uncomment this:
+    -- detached = false,
+  }
+}
+
+dap.configurations.cpp = {
+  {
+    name = "Launch file",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+}
+
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end
+
+require("dap-python").setup("python3")
+
+
 EOF
+
+
 
