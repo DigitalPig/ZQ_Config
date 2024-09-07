@@ -75,7 +75,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git battery terraform doctl python fzf kubectl 
+plugins=(git battery terraform doctl python kubectl fzf 
     kubectx docker podman ubuntu doctl skaffold terraform vscode)
 
 source $ZSH/oh-my-zsh.sh
@@ -152,17 +152,15 @@ alias sicp="racket -l r5rs -l sicp --repl"
 export GUROBI_HOME="/opt/gurobi/linux64"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
-# DigitalOcean Personal Token
-#
-# Digital Ocean Team
-
+## AWS setup
+***REMOVED***
+***REMOVED***
+***REMOVED***
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 alias vi=nvim
-# Duolingo password 
-export DUOLINGO_PASSWORD=XxET7pEDciKiZr
 
 # PKG-config path
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig:/usr/lib/pkgconfig
@@ -189,4 +187,23 @@ fi
 # <<< conda initialize <<<
 
 alias conda=mamba
-export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/fzf
+export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/home/digitalpig/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<
+#
+
+# Import the tokens
+if [ -f ~/.tokens ]; then
+    source ~/.tokens
+else
+    print "404: ~/.tokens not found."
+fi
+
+

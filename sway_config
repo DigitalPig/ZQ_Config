@@ -15,17 +15,18 @@ set $up k
 set $right l
 
 # Copy from I3
-font pango:DejaVu Sans Mono for Powerline 12
+font pango:DejaVu Sans Mono for Powerline 13
 
 default_border pixel
 # Your preferred terminal emulator
 set $term WARP_ENABLE_WAYLAND=1 warp-terminal 
+#set $term kitty
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 #set $menu exec wofi --show=drun,run -i -f
 # Wofi seems to have issues on display with scale > 1
 #set $menu "rofi -combi-modi window,drun,ssh,run -show combi -show-icons -monitor -1"
-set $menu "fuzzel -i -D yes"
+set $menu "fuzzel -i -D auto"
 
 ### Output configuration
 #
@@ -34,12 +35,15 @@ set $menu "fuzzel -i -D yes"
 #
 # Example configuration:
 #
-output eDP-1 subpixel rgb
-output DP-1 subpixel rgb
-output eDP-1 resolution 1920x1080 position 960,1800
+#output eDP-1 subpixel rgb
+# rgb|bgr|vrgb|vbgr|none
+# output DP-1 subpixel 
+output DP-1 scale_filter smart
+#output eDP-1 resolution 1920x1080 position 960,1800 # Line for 1.2 scale factor
 output DP-1 resolution 3840x2160 position 0,0
+output eDP-1 resolution 1920x1080 position 960,2160
 output eDP-1 scale 1.0
-output DP-1 scale 1.2
+output DP-1 scale 1.0
 
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
@@ -56,8 +60,8 @@ exec_always --no-startup-id /home/digitalpig/Codes/portal_sway.sh
 
 
 exec swayidle -w \
-          timeout 600 'swaylock -f -c 000000 -F -i $HOME/Codes/sway-nasa-apod/nasa-apod.jpg -l' \
-          timeout 900 'swaymsg "output \* dpms off"' \
+          timeout 300 'swaylock -f -c 000000 -F -i $HOME/Codes/sway-nasa-apod/nasa-apod.jpg -l' \
+          timeout 600 'swaymsg "output \* dpms off"' \
           timeout 1800 'systemctl suspend' \
                resume 'swaymsg "output \* dpms on"' \
           before-sleep 'swaylock -f -c 000000 -F -i $HOME/Codes/sway-nasa-apod/nasa-apod.jpg -l'
@@ -251,8 +255,8 @@ bindsym $mod+r mode "resize"
 bindsym $mod+End exec wlogout
 
 mode "Light/Dark Switch" {
-    bindsym l exec --no-startup-id gsettings set org.gnome.desktop.interface color-scheme prefer-light, mode "default"
-    bindsym d exec --no-startup-id gsettings set org.gnome.desktop.interface color-scheme prefer-dark, mode "default"
+    bindsym l exec --no-startup-id $HOME/.local/bin/prefer-light.sh, mode "default"
+    bindsym d exec --no-startup-id $HOME/.local/bin/prefer-dark.sh, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -306,8 +310,8 @@ exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ss
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 exec --no-startup-id /home/digitalpig/.local/bin/swww-daemon &
 exec --no-startup-id swaync & 
-#exec --no-startup-id /home/digitalpig/Codes/sway-nasa-apod/nasa-apod.sh -r
-exec --no-startup-id /home/digitalpig/.local/bin/swww img /home/digitalpig/Codes/sway-nasa-apod/nasa-apod.jpg --transition-step 10 --transition-fps 60
+exec --no-startup-id /home/digitalpig/Codes/sway-nasa-apod/nasa-apod.sh
+exec --no-startup-id /home/digitalpig/.local/bin/swww img /home/digitalpig/Codes/sway-nasa-apod/nasa-apod.jpg --transition-step 10 --transition-fps 60 --resize fit
 
 # Pulse Audio controls
 bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5% && pkill -RTMIN+1 i3blocks #increase sound volume
