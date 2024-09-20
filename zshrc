@@ -152,11 +152,6 @@ alias sicp="racket -l r5rs -l sicp --repl"
 export GUROBI_HOME="/opt/gurobi/linux64"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
-## AWS setup
-***REMOVED***
-***REMOVED***
-***REMOVED***
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -207,3 +202,5 @@ else
 fi
 
 
+
+. "$HOME/.cargo/env"

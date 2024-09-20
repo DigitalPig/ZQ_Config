@@ -544,7 +544,7 @@ require('mason').setup()
 ----
 
 
-require('lspconfig')['tsserver'].setup{
+require('lspconfig')['ts_ls'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
 }
