@@ -97,6 +97,7 @@ Plug 'ianding1/leetcode.vim'
 " Python related
 Plug 'pixelneo/vim-python-docstring'
 Plug '3rd/image.nvim'
+Plug 'benlubas/molten-nvim', {'version': '^1.0.0'}
 
 " Copilot and other code completion process
 " Plug 'github/copilot.vim'
@@ -130,7 +131,6 @@ Plug 'hrsh7th/nvim-cmp',
 " LSP 
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-telescope/telescope-file-browser.nvim'
@@ -378,6 +378,8 @@ nnoremap <silent> <S-F5> :lua require('dap').terminate()<CR>
 nnoremap <silent> <F11> :lua require('dap').step_into()<CR>
 nnoremap <silent> <S-F12> :lua require('dap').step_out()<CR>
 nnoremap <silent> <F10> :lua require('dap').step_over()<CR>
+nnoremap <silent> <leader>dr :lua require('dap').repl.open()<CR>
+
 vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
 
 
@@ -390,6 +392,13 @@ lua << EOF
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- molten related setup
+vim.g.molten_image_provider = "image.nvim"
+vim.g.molten_output_win_max_height = 20
+--require('molten.status').initialized() -- "Molten" or "" based on initialization information
+--require('molten.status').kernels() -- "kernel1 kernel2" list of kernels attached to buffer or ""
+
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
@@ -493,7 +502,7 @@ end
       { name = 'buffer' },
     }),
     performance = {
-        fetching_timeout=2000,
+        fetching_timeout=200,
     },
   })
 
@@ -775,6 +784,7 @@ require("codecompanion").setup({
 require("dressing").setup()
 local dap = require('dap')
 local dapui = require('dapui')
+dapui.setup()
 dap.adapters.codelldb = {
   type = 'server',
   port = "${port}",
@@ -817,6 +827,22 @@ dap.listeners.before.event_exited.dapui_config = function()
 end
 
 require("dap-python").setup("python3")
+
+
+vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
+      require('dap.ui.widgets').hover()
+    end)
+    vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
+      require('dap.ui.widgets').preview()
+    end)
+    vim.keymap.set('n', '<Leader>df', function()
+      local widgets = require('dap.ui.widgets')
+      widgets.centered_float(widgets.frames)
+    end)
+    vim.keymap.set('n', '<Leader>ds', function()
+      local widgets = require('dap.ui.widgets')
+      widgets.centered_float(widgets.scopes)
+    end)
 
 
 EOF
