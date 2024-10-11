@@ -103,8 +103,9 @@ Plug 'benlubas/molten-nvim', {'version': '^1.0.0'}
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
-Plug 'milanglacier/minuet-ai.nvim'
-Plug 'olimorris/codecompanion.nvim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim'
+" Plug 'milanglacier/minuet-ai.nvim'
+" Plug 'olimorris/codecompanion.nvim'
 
 " Snippet support
 Plug 'SirVer/ultisnips'
@@ -382,7 +383,11 @@ nnoremap <silent> <leader>dr :lua require('dap').repl.open()<CR>
 
 vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
 
-
+nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
+nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
+nnoremap <leader>cct <cmd>CopilotChatTests<cr>
+xnoremap <leader>ccv :CopilotChatVisual<cr>
+xnoremap <leader>ccx :CopilotChatInPlace<cr>
 
 
 " Begining of LUA section setup
@@ -447,9 +452,9 @@ local lsp_flags = {
 }
 
 ----
-require('minuet').setup({
-    provider = 'claude',
- })
+--require('minuet').setup({
+--    provider = 'claude',
+-- })
 
   -- Set up nvim-cmp.
   local cmp = require'cmp'
@@ -481,7 +486,7 @@ end
       ['<C-m>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-      ['<C-l>'] = require('minuet').make_cmp_map(),
+--      ['<C-l>'] = require('minuet').make_cmp_map(),
       ["<Tab>"] = vim.schedule_wrap(function(fallback)
       if cmp.visible() and has_words_before() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -500,10 +505,7 @@ end
         --{ name = 'minuet' },
     }, {
       { name = 'buffer' },
-    }),
-    performance = {
-        fetching_timeout=200,
-    },
+    })
   })
 
   -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
@@ -767,19 +769,37 @@ require("copilot").setup({
 })
 
 require("copilot_cmp").setup()
-require("codecompanion").setup({
-  strategies = {
-    chat = {
-      adapter = "anthropic",
-    },
-    inline = {
-      adapter = "anthropic",
-    },
-    agent = {
-      adapter = "anthropic",
-    },
+local copilot_chat = require("CopilotChat")
+copilot_chat.setup({
+  debug = true,
+  show_help = "yes",
+  prompts = {
+    Explain = "Explain how it works by Japanese language.",
+    Review = "Review the following code and provide concise suggestions.",
+    Tests = "Briefly explain how the selected code works, then generate unit tests.",
+    Refactor = "Refactor the code to improve clarity and readability.",
   },
+  build = function()
+    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
+  end,
+  event = "VeryLazy",
 })
+
+
+
+--require("codecompanion").setup({
+--  strategies = {
+--    chat = {
+--      adapter = "anthropic",
+--    },
+--    inline = {
+--      adapter = "anthropic",
+--    },
+--    agent = {
+--      adapter = "anthropic",
+--    },
+--  },
+--})
 
 require("dressing").setup()
 local dap = require('dap')

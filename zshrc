@@ -181,8 +181,8 @@ if [ -f "/opt/mambaforge/etc/profile.d/mamba.sh" ]; then
 fi
 # <<< conda initialize <<<
 
-alias conda=mamba
-export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/
+#alias conda=mamba
+#export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/
 
 # >>> juliaup initialize >>>
 
@@ -204,3 +204,4 @@ fi
 
 
 . "$HOME/.cargo/env"
+export PATH=/home/digitalpig/.pixi/bin:$PATH
