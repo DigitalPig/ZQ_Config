@@ -98,7 +98,7 @@ Plug 'ianding1/leetcode.vim'
 Plug 'pixelneo/vim-python-docstring'
 Plug '3rd/image.nvim'
 Plug 'benlubas/molten-nvim', {'version': '^1.0.0'}
-
+Plug 'kmontocam/nvim-conda'
 " Copilot and other code completion process
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
@@ -722,7 +722,7 @@ require("iron.core").setup {
         command = {"zsh"}
       },
       python = {
-        command = { "python3" },  -- or { "ipython", "--no-autoindent" }
+        command = { "ipython", "--no-autoindent" },
         format = require("iron.fts.common").bracketed_paste_python
       }
     },
