@@ -549,6 +549,7 @@ require('mason').setup()
         ensure_installed = { "pyright" }
       }
       require("lspconfig").pyright.setup {
+        on_attach = on_attach,
         capabilities = capabilities,
       }
 
@@ -570,7 +571,9 @@ require('lspconfig')['rust_analyzer'].setup{
 }
 -]]
 
-require('lspconfig')['julials'].setup{}
+require('lspconfig')['julials'].setup{
+    on_attach = on_attach
+}
 
 --local rt = require("rust-tools")
 
