@@ -104,7 +104,17 @@ Plug 'kmontocam/nvim-conda'
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
-Plug 'CopilotC-Nvim/CopilotChat.nvim'
+
+
+" Deps
+Plug 'MunifTanjim/nui.nvim'
+
+" Optional deps
+Plug 'HakonHarnes/img-clip.nvim'
+
+" Yay, pass source=true if you want to build from source
+Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
+" Plug 'CopilotC-Nvim/CopilotChat.nvim'
 " Plug 'milanglacier/minuet-ai.nvim'
 " Plug 'olimorris/codecompanion.nvim'
 
@@ -118,7 +128,6 @@ Plug 'honza/vim-snippets'
 "Plug 'simrat39/rust-tools.nvim'
 Plug 'mrcjkb/rustaceanvim', {'version': '^5'}
 Plug 'timonv/vim-cargo'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'mfussenegger/nvim-dap'
 " Plug 'puremourning/vimspector'
 Plug 'Vigemus/iron.nvim'
@@ -384,11 +393,11 @@ nnoremap <silent> <leader>dr :lua require('dap').repl.open()<CR>
 
 vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
 
-nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
-nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
-nnoremap <leader>cct <cmd>CopilotChatTests<cr>
-xnoremap <leader>ccv :CopilotChatVisual<cr>
-xnoremap <leader>ccx :CopilotChatInPlace<cr>
+" nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
+" nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
+" nnoremap <leader>cct <cmd>CopilotChatTests<cr>
+" xnoremap <leader>ccv :CopilotChatVisual<cr>
+" xnoremap <leader>ccx :CopilotChatInPlace<cr>
 
 
 " Begining of LUA section setup
@@ -773,21 +782,21 @@ require("copilot").setup({
 })
 
 require("copilot_cmp").setup()
-local copilot_chat = require("CopilotChat")
-copilot_chat.setup({
-  debug = true,
-  show_help = "yes",
-  prompts = {
-    Explain = "Explain how it works by Japanese language.",
-    Review = "Review the following code and provide concise suggestions.",
-    Tests = "Briefly explain how the selected code works, then generate unit tests.",
-    Refactor = "Refactor the code to improve clarity and readability.",
-  },
-  build = function()
-    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
-  end,
-  event = "VeryLazy",
-})
+--local copilot_chat = require("CopilotChat")
+--copilot_chat.setup({
+--  debug = true,
+--  show_help = "yes",
+--  prompts = {
+--    Explain = "Explain how it works by Japanese language.",
+--    Review = "Review the following code and provide concise suggestions.",
+--    Tests = "Briefly explain how the selected code works, then generate unit tests.",
+--    Refactor = "Refactor the code to improve clarity and readability.",
+--  },
+--  build = function()
+--    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
+--  end,
+--  event = "VeryLazy",
+--})
 
 
 
@@ -889,7 +898,9 @@ vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {no
 
 -- Git conflict Resolving
 require('git-conflict').setup()
-
+require('img-clip').setup()
+require('avante_lib').load()
+require('avante').setup()
 EOF
 
 
