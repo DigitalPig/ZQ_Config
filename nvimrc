@@ -24,6 +24,7 @@ Plug 'jalvesaq/Nvim-R'
 Plug 'jalvesaq/vimcmdline'
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
+Plug 'akinsho/git-conflict.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -885,6 +886,9 @@ function _lazygit_toggle()
 end
 
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+
+-- Git conflict Resolving
+require('git-conflict').setup()
 
 EOF
 
