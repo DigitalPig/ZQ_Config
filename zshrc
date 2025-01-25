@@ -76,7 +76,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git battery terraform doctl python kubectl fzf 
-    kubectx docker podman ubuntu doctl skaffold terraform vscode)
+    kubectx podman ubuntu skaffold vscode direnv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -162,26 +162,6 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/x86_64-linux-gnu/pkgconfig/:/us
 
 export QT_IM_MODULE=fcitx
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/opt/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/opt/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/opt/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-#alias conda=mamba
 #export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/
 
 # >>> juliaup initialize >>>
@@ -205,3 +185,22 @@ fi
 
 . "$HOME/.cargo/env"
 export PATH=/home/digitalpig/.pixi/bin:$PATH
+
+
+eval "$(direnv hook zsh)"
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'micromamba shell init' !!
+export MAMBA_EXE='/home/digitalpig/.local/bin/micromamba';
+export MAMBA_ROOT_PREFIX='/home/digitalpig/micromamba';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+alias conda=micromamba
+alias mamba=micromamba
+

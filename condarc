@@ -1,7 +1,8 @@
 auto_activate_base: false
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
+  - nodefaults
 create_default_packages:
   - pip
   - ipython
@@ -17,4 +18,4 @@ create_default_packages:
   - cairosvg
   - debugpy
   - ruff
-
+channel_priority: strict

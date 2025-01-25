@@ -104,6 +104,7 @@ Plug 'kmontocam/nvim-conda'
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
+Plug 'joshuavial/aider.nvim'
 
 
 " Deps
@@ -159,6 +160,9 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'stevearc/dressing.nvim'
+
+" Dir automations
+Plug 'direnv/direnv.vim'
 call plug#end()
 
 " Enable omni completion.
@@ -176,7 +180,7 @@ call plug#end()
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
-lua require'lspconfig'.rust_analyzer.setup{}
+" lua require'lspconfig'.rust_analyzer.setup{}
 
 
 " For perlomni.vim setting.
@@ -399,6 +403,8 @@ vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<C
 " xnoremap <leader>ccv :CopilotChatVisual<cr>
 " xnoremap <leader>ccx :CopilotChatInPlace<cr>
 
+set autoread
+au CursorHold * checktime | call feedkeys("lh")
 
 " Begining of LUA section setup
 
@@ -479,7 +485,7 @@ end
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
@@ -507,7 +513,7 @@ end
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
@@ -896,11 +902,28 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 
+local aider = Terminal:new({
+  cmd = "aider --watch-files",
+  hidden = true,
+  direction = "vertical",
+  size = function() return vim.o.columns * 0.4 end, -- 40% of total window width
+  float_opts = {
+    border = "double",
+  }
+})
+
+function _aider_toggle()
+  aider:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>ai", "<cmd>lua _aider_toggle()<CR>", {noremap = true, silent = true})
 -- Git conflict Resolving
 require('git-conflict').setup()
 require('img-clip').setup()
 require('avante_lib').load()
 require('avante').setup()
+require('aider').setup()
+
 EOF
 
 
