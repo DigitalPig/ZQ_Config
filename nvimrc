@@ -18,7 +18,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'folke/tokyonight.nvim', {'branch': 'main'}
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
 Plug 'jalvesaq/Nvim-R'
 Plug 'jalvesaq/vimcmdline'
@@ -106,9 +106,10 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 Plug 'joshuavial/aider.nvim'
 
-
 " Deps
 Plug 'MunifTanjim/nui.nvim'
+Plug 'echasnovski/mini.pick'
+Plug 'ibhagwan/fzf-lua'
 
 " Optional deps
 Plug 'HakonHarnes/img-clip.nvim'
@@ -150,8 +151,7 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
-
-
+Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 " Terminals
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 
@@ -165,86 +165,14 @@ Plug 'stevearc/dressing.nvim'
 Plug 'direnv/direnv.vim'
 call plug#end()
 
-" Enable omni completion.
-"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType python setlocal omnifunc=python3complete#Complete
-"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-"if !exists('g:neocomplete#sources#omni#input_patterns')
-"  let g:neocomplete#sources#omni#input_patterns = {}
-"endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" lua require'lspconfig'.rust_analyzer.setup{}
-
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-"let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 call glaive#Install()
 Glaive coverage plugin[mappings]
-"let g:deoplete#enable_at_startup = 1
-"let g:echodoc#enable_at_startup=1
-"let g:echodoc#type='virtual'
-"let g:ale_completion_enabled=0
 let g:rainbow_active=1
 " Language Server Setting
 set hidden
 
 "imap <c-space> <Plug>(asyncomplete_force_refresh)
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-
-"function ChangeCondaEnv()
-"    CondaChangeEnv
-"    if exists("$CONDA_DEFAULT_ENV")
-"        let g:python3_host_prog=substitute(system("which -a python3 | head -n2 | tail -n1"), "\n", '', 'g')
-"    else
-"        let g:python3_host_prog=substitute(system("which python3"), "\n", '', 'g')
-"    endif
-    " Stop the existing server
-"    call lsp#stop_server("pylsp")
-"    if executable('pylsp')
-"    " pip install python-language-server
-"    au User lsp_setup call lsp#register_server({
-"        \ 'name': 'pylsp',
-"        \ 'cmd': {server_info->['pylsp']},
-"        \ 'whitelist': ['python'],
-"        \ 'blacklist': ['julia']
-"        \ })
-"    endif
-"    call lsp#disable()
-"    call lsp#enable()
-"    call ale#toggle#Disable()
-"    call ale#toggle#Enable()
-"endfunction
-
-" autocmd FileType python map <F6> :call ChangeCondaEnv()<CR>
-
-"if executable('julials')
-"    au User lsp_setup call lsp#register_server({
-"        \ 'name': 'julials',
-"        \ 'cmd': {server_info->['julials']},
-"        \ 'whitelist': ['julia'],
-"        \ 'blacklist': ['python']
-"        \ })
-"endif
-"if executable('pyls')
-    " pip install python-language-server
-"    au User lsp_setup call lsp#register_server({
-"       \ 'name': 'pyls',
-"       \ 'cmd': {server_info->['pylsp']},
-"       \ 'whitelist': ['python'],
-"       \ 'blacklist': ['julia']
-"       \ })
-"endif
-
-"autocmd FileType julia setlocal omnifunc=lsp#complete
 
 " Vim Color
 set noshowmode
@@ -255,10 +183,6 @@ colorscheme tokyonight
 " Vim Airline setup
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts=1
-
-" NerdTree integration
-" let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-
 
 " Python Mode Setup
 let b:ale_fixers = {'javascript': ['prettier', 'eslint'],
@@ -275,15 +199,6 @@ let g:tex_conceal='abdmg'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size=1
 let g:lsp_auto_enable=1
-"set completeopt+=preview
-" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-"let g:default_julia_version = "current"
-
-    " Pass a dictionary to set multiple options
-"    call deoplete#custom#option({
-"    \ 'auto_complete_delay': 200,
-"    \ 'smart_case': v:true,
-"    \ })
 
 
 let g:lsp_highlights_enabled=1
@@ -300,15 +215,6 @@ map <silent> <leader>pc <Plug>(IPy-RunCell)
 
 " Clipboard
 set clipboard+=unnamedplus
-
-" Neosnippet
-" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" Debug julia LSP
-" let g:lsp_log_verbose = 0
-" let g:lsp_log_file = expand('~/vim-lsp.log')
 
 " Leetcode setup
 nnoremap <leader>ll :LeetCodeList<cr>
@@ -373,15 +279,16 @@ nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
 
-" Telescope setup 
+" Telescope setup <- used to be telescope setup now it is all FzfLua 
 " Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>sf <cmd>Telescope git_files<cr>
-nnoremap <leader>ss <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>sw <cmd>Telescope lsp_workspace_symbols<cr>
+nnoremap <leader>ff <cmd>FzfLua files<cr>
+nnoremap <leader>fg <cmd>FzfLua live_grep<cr>
+nnoremap <leader>fb <cmd>FzfLua buffers<cr>
+nnoremap <leader>fh <cmd>FzfLua tags<cr>
+nnoremap <leader>gf <cmd>FzfLua git_files<cr>
+nnoremap <leader>sr <cmd>FzfLua lsp_references<cr>
+nnoremap <leader>ss <cmd>FzfLua lsp_document_symbols<cr>
+nnoremap <leader>sw <cmd>FzfLua lsp_workspace_symbols<cr>
 nnoremap <leader>fe <cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>
 
 " Debug NVIM-DAP
@@ -569,12 +476,24 @@ require('mason').setup()
         capabilities = capabilities,
       }
 
+--local lsp_lines = require("lsp_lines")
+--  lsp_lines.setup()
+--  vim.keymap.set(
+--    "", "<leader>dl", lsp_lines.toggle, { desc = "Toggle lsp_lines" }
+--  )
+
 ----
 
 
 require('lspconfig')['ts_ls'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+}
+
+require('lspconfig')['pyright'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities,
 }
 --[[
 require('lspconfig')['rust_analyzer'].setup{
@@ -829,7 +748,7 @@ dap.adapters.codelldb = {
   port = "${port}",
   executable = {
     -- CHANGE THIS to your path!
-    command = '/home/digitalpig/.local/bin/codelldb/extension/adapter/codelldb',
+    command = '/Users/zqli/.local/bin/codelldb/extension/adapter/codelldb',
     args = {"--port", "${port}"},
 
     -- On windows you may have to uncomment this:
@@ -917,7 +836,26 @@ function _aider_toggle()
 end
 
 vim.api.nvim_set_keymap("n", "<leader>ai", "<cmd>lua _aider_toggle()<CR>", {noremap = true, silent = true})
+--- for neovide
+if vim.g.neovide then
+  vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
+  vim.keymap.set('v', '<D-c>', '"+y') -- Copy
+  vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
+  vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
+  vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
+  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+end
+
+-- Allow clipboard copy paste in neovim
+vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+
+
 -- Git conflict Resolving
+require('mini.pick').setup()
+require('fzf-lua').setup()
 require('git-conflict').setup()
 require('img-clip').setup()
 require('avante_lib').load()
