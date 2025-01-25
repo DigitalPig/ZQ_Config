@@ -18,7 +18,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'folke/tokyonight.nvim', {'branch': 'main'}
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
 Plug 'jalvesaq/Nvim-R'
 Plug 'jalvesaq/vimcmdline'
@@ -104,10 +104,12 @@ Plug 'kmontocam/nvim-conda'
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
-
+Plug 'joshuavial/aider.nvim'
 
 " Deps
 Plug 'MunifTanjim/nui.nvim'
+Plug 'echasnovski/mini.pick'
+Plug 'ibhagwan/fzf-lua'
 
 " Optional deps
 Plug 'HakonHarnes/img-clip.nvim'
@@ -149,8 +151,7 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
-
-
+Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 " Terminals
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 
@@ -159,6 +160,9 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'stevearc/dressing.nvim'
+
+" Shopify Related
+Plug 'Shopify/shadowenv.vim'
 call plug#end()
 
 " Enable omni completion.
@@ -176,7 +180,7 @@ call plug#end()
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
-lua require'lspconfig'.rust_analyzer.setup{}
+" lua require'lspconfig'.rust_analyzer.setup{}
 
 
 " For perlomni.vim setting.
@@ -369,15 +373,16 @@ nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
 
-" Telescope setup 
+" Telescope setup <- used to be telescope setup now it is all FzfLua 
 " Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>sf <cmd>Telescope git_files<cr>
-nnoremap <leader>ss <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>sw <cmd>Telescope lsp_workspace_symbols<cr>
+nnoremap <leader>ff <cmd>FzfLua files<cr>
+nnoremap <leader>fg <cmd>FzfLua live_grep<cr>
+nnoremap <leader>fb <cmd>FzfLua buffers<cr>
+nnoremap <leader>fh <cmd>FzfLua tags<cr>
+nnoremap <leader>gf <cmd>FzfLua git_files<cr>
+nnoremap <leader>sr <cmd>FzfLua lsp_references<cr>
+nnoremap <leader>ss <cmd>FzfLua lsp_document_symbols<cr>
+nnoremap <leader>sw <cmd>FzfLua lsp_workspace_symbols<cr>
 nnoremap <leader>fe <cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>
 
 " Debug NVIM-DAP
@@ -479,7 +484,7 @@ end
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
@@ -507,7 +512,7 @@ end
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
@@ -563,12 +568,24 @@ require('mason').setup()
         capabilities = capabilities,
       }
 
+--local lsp_lines = require("lsp_lines")
+--  lsp_lines.setup()
+--  vim.keymap.set(
+--    "", "<leader>dl", lsp_lines.toggle, { desc = "Toggle lsp_lines" }
+--  )
+
 ----
 
 
 require('lspconfig')['ts_ls'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+}
+
+require('lspconfig')['pyright'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities,
 }
 --[[
 require('lspconfig')['rust_analyzer'].setup{
@@ -823,7 +840,7 @@ dap.adapters.codelldb = {
   port = "${port}",
   executable = {
     -- CHANGE THIS to your path!
-    command = '/home/digitalpig/.local/bin/codelldb/extension/adapter/codelldb',
+    command = '/Users/zqli/.local/bin/codelldb/extension/adapter/codelldb',
     args = {"--port", "${port}"},
 
     -- On windows you may have to uncomment this:
@@ -896,11 +913,31 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 
+--- for neovide
+if vim.g.neovide then
+  vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
+  vim.keymap.set('v', '<D-c>', '"+y') -- Copy
+  vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
+  vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
+  vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
+  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+end
+
+-- Allow clipboard copy paste in neovim
+vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+
+
 -- Git conflict Resolving
+require('mini.pick').setup()
+require('fzf-lua').setup()
 require('git-conflict').setup()
 require('img-clip').setup()
 require('avante_lib').load()
 require('avante').setup()
+require('aider').setup()
 EOF
 
 
