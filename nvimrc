@@ -20,7 +20,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'folke/tokyonight.nvim', {'branch': 'main'}
 "Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
-Plug 'jalvesaq/Nvim-R'
 Plug 'jalvesaq/vimcmdline'
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
@@ -99,7 +98,7 @@ Plug 'ianding1/leetcode.vim'
 Plug 'pixelneo/vim-python-docstring'
 Plug '3rd/image.nvim'
 Plug 'benlubas/molten-nvim', {'version': '^1.0.0'}
-Plug 'kmontocam/nvim-conda'
+" Plug 'kmontocam/nvim-conda'
 " Copilot and other code completion process
 " Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
@@ -117,7 +116,7 @@ Plug 'HakonHarnes/img-clip.nvim'
 " Yay, pass source=true if you want to build from source
 Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 " Plug 'CopilotC-Nvim/CopilotChat.nvim'
-" Plug 'milanglacier/minuet-ai.nvim'
+Plug 'milanglacier/minuet-ai.nvim'
 " Plug 'olimorris/codecompanion.nvim'
 
 " Snippet support
@@ -133,6 +132,11 @@ Plug 'timonv/vim-cargo'
 Plug 'mfussenegger/nvim-dap'
 " Plug 'puremourning/vimspector'
 Plug 'Vigemus/iron.nvim'
+
+" GNU R
+Plug 'R-nvim/cmp-r'
+Plug 'R-nvim/R.nvim'
+
 
 
 " Quarto
@@ -151,7 +155,7 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
-Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
+" Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 " Terminals
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 
@@ -408,27 +412,41 @@ end
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-m>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
---      ['<C-l>'] = require('minuet').make_cmp_map(),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+      --["<C-l>"] = require('minuet').make_cmp_map(),
       ["<Tab>"] = vim.schedule_wrap(function(fallback)
-      if cmp.visible() and has_words_before() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-      else
-        fallback()
-      end
-    end)
+        if cmp.visible() then 
+            if has_words_before() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            else
+                cmp.confirm({ select = true })
+            end
+        else
+            fallback()
+        end
+        end),
+
+
     }),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp', group_index = 2 },
+        { name = 'cmp_r', group_index = 2 },
+        { name = "copilot", group_index = 3 },
       -- { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
-      { name = 'ultisnips' }, -- For ultisnips users.
+      { name = 'ultisnips', group_index = 2}, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
-        { name = "copilot"},  
-        --{ name = 'minuet' },
+        --{ name = "minuet", group_index = 3},  
     }, {
       { name = 'buffer' },
-    })
+    }),
+    performance = {
+        -- It is recommended to increase the timeout duration due to
+        -- the typically slower response speed of LLMs compared to
+        -- other completion sources. This is not needed when you only
+        -- need manual completion.
+        fetching_timeout = 2000,
+    },
   })
 
   -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
@@ -556,7 +574,8 @@ vim.opt.termguicolors = true
 require("bufferline").setup{}
 
 require("nvim-treesitter.configs").setup({
-      ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript", "rust", "julia", "json", "yaml" },
+      ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript", "rust", "julia", "json", "yaml", "markdown", "markdown_inline",
+                          "r", "rnoweb", "latex", "csv" },
       auto_install = false,
       highlight = { enable = true, additional_vim_regex_highlighting = false },
       incremental_selection = {
@@ -567,9 +586,8 @@ require("nvim-treesitter.configs").setup({
           scope_incremental = "<C-s>",
           node_decremental = "<C-m>",
         }
-        }
       }
-    ) 
+})
 
 require("ibl").setup()
 
@@ -661,7 +679,8 @@ require("iron.core").setup {
       },
       python = {
         command = { "ipython", "--no-autoindent" },
-        format = require("iron.fts.common").bracketed_paste_python
+        format = require("iron.fts.common").bracketed_paste_python,
+        block_deviders = { "# %%", "#%%" },
       }
     },
     -- How the repl window will be displayed
@@ -678,6 +697,8 @@ require("iron.core").setup {
     send_paragraph = "<space>sp",
     send_until_cursor = "<space>su",
     send_mark = "<space>sm",
+    send_code_block = "<space>sb",
+    send_code_block_and_move = "<space>sn",
     mark_motion = "<space>mc",
     mark_visual = "<space>mc",
     remove_mark = "<space>md",
@@ -707,37 +728,6 @@ require("copilot").setup({
 })
 
 require("copilot_cmp").setup()
---local copilot_chat = require("CopilotChat")
---copilot_chat.setup({
---  debug = true,
---  show_help = "yes",
---  prompts = {
---    Explain = "Explain how it works by Japanese language.",
---    Review = "Review the following code and provide concise suggestions.",
---    Tests = "Briefly explain how the selected code works, then generate unit tests.",
---    Refactor = "Refactor the code to improve clarity and readability.",
---  },
---  build = function()
---    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
---  end,
---  event = "VeryLazy",
---})
-
-
-
---require("codecompanion").setup({
---  strategies = {
---    chat = {
---      adapter = "anthropic",
---    },
---    inline = {
---      adapter = "anthropic",
---    },
---    agent = {
---      adapter = "anthropic",
---    },
---  },
---})
 
 require("dressing").setup()
 local dap = require('dap')
@@ -861,8 +851,56 @@ require('img-clip').setup()
 require('avante_lib').load()
 require('avante').setup()
 require('aider').setup()
+require('minuet').setup({
+    cmp = {
+        enable_auto_complete = true,
+    },
+    provider = 'openai_compatible',
+    provider_options = {
+        openai_compatible = {
+            api_key = 'OPENROUTER_API_KEY_MINUET',
+            end_point = 'https://openrouter.ai/api/v1/chat/completions',
+            model = 'qwen/qwen-2.5-coder-32b-instruct',
+            stream = true,
+            name = 'QWen 2.5 Coder',
+            optional = {
+                stop=nil,
+                max_tokens = 3000,
+            },
+        },
+    },
+})
+
+require('minuet').make_cmp_map()
+
+require('quarto').setup{
+  debug = false,
+  closePreviewOnExit = true,
+  lspFeatures = {
+    enabled = true,
+    chunks = "curly",
+    languages = { "r", "python", "julia", "bash", "html" },
+    diagnostics = {
+      enabled = true,
+      triggers = { "BufWritePost" },
+    },
+    completion = {
+      enabled = true,
+    },
+  },
+  codeRunner = {
+    enabled = true,
+    default_method = "slime", -- "molten", "slime", "iron" or <function>
+    ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+    -- Takes precedence over `default_method`
+    never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
+  },
+}
+
+local quarto = require('quarto')
+quarto.setup()
+vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
+
+require("cmp_r").setup({ })
 
 EOF
-
-
-

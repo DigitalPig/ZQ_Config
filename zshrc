@@ -204,3 +204,10 @@ unset __mamba_setup
 alias conda=micromamba
 alias mamba=micromamba
 
+
+# Aider related configuration
+
+export AIDER_DARK_MODE=true
+export AIDER_ARCHITECT=true
+export AIDER_MODEL="openrouter/deepseek/deepseek-r1"
+export AIDER_EDITOR_MODEL="openrouter/anthropic/claude-3.5-sonnet"
