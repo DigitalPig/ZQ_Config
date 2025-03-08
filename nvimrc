@@ -77,7 +77,12 @@ Plug 'morhetz/gruvbox'
 
 Plug 'hashivim/vim-hashicorp-tools'
 
+" Neotest
 Plug 'janko-m/vim-test'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'nvim-neotest/neotest'
+Plug 'nvim-neotest/neotest-python'
 
 " Coverage
 Plug 'google/vim-maktaba'
@@ -902,5 +907,13 @@ quarto.setup()
 vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
 
 require("cmp_r").setup({ })
+
+require("neotest").setup({
+  adapters = {
+    require("neotest-python"),
+    require('rustaceanvim.neotest')
+  }
+})
+
 
 EOF
