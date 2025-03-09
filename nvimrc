@@ -320,7 +320,16 @@ vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<C
 " xnoremap <leader>ccx :CopilotChatInPlace<cr>
 
 set autoread
-au CursorHold * checktime | call feedkeys("lh")
+
+" Setup autoread to check for file changes
+augroup AutoRead
+  autocmd!
+  " Check for file changes when in normal mode and when the cursor hasn't moved for 'updatetime' milliseconds
+  autocmd CursorHold * if mode() == 'n' | checktime | endif
+augroup END
+
+" Set a reasonable updatetime (in milliseconds) - lower value means more frequent checks
+set updatetime=1000
 
 " Begining of LUA section setup
 
