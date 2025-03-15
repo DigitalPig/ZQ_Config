@@ -109,6 +109,7 @@ Plug 'benlubas/molten-nvim', {'version': '^1.0.0'}
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 Plug 'joshuavial/aider.nvim'
+Plug 'greggh/claude-code.nvim'
 
 " Deps
 Plug 'MunifTanjim/nui.nvim'
@@ -923,6 +924,9 @@ require("neotest").setup({
     require('rustaceanvim.neotest')
   }
 })
+
+-- Claude Code
+require('claude-code').setup()
 
 
 EOF
