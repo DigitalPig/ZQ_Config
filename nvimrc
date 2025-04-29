@@ -110,6 +110,7 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 Plug 'joshuavial/aider.nvim'
 Plug 'greggh/claude-code.nvim'
+Plug 'olimorris/codecompanion.nvim'
 
 " Deps
 Plug 'MunifTanjim/nui.nvim'
@@ -120,7 +121,7 @@ Plug 'ibhagwan/fzf-lua'
 Plug 'HakonHarnes/img-clip.nvim'
 
 " Yay, pass source=true if you want to build from source
-Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
+" Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 " Plug 'CopilotC-Nvim/CopilotChat.nvim'
 Plug 'milanglacier/minuet-ai.nvim'
 " Plug 'olimorris/codecompanion.nvim'
@@ -696,7 +697,12 @@ require("iron.core").setup {
         command = { "ipython", "--no-autoindent" },
         format = require("iron.fts.common").bracketed_paste_python,
         block_deviders = { "# %%", "#%%" },
-      }
+      },
+    julia = {
+      command = { "julia" },
+      format = require("iron.fts.common").bracketed_paste_julia,
+      block_deviders = { "# %%", "#%%" },
+    },
     },
     -- How the repl window will be displayed
     -- See below for more information
@@ -863,8 +869,8 @@ require('mini.pick').setup()
 require('fzf-lua').setup()
 require('git-conflict').setup()
 require('img-clip').setup()
-require('avante_lib').load()
-require('avante').setup()
+-- require('avante_lib').load()
+-- require('avante').setup()
 require('aider').setup()
 require('minuet').setup({
     cmp = {
@@ -935,6 +941,74 @@ window = {
     hide_signcolumn = true, -- Hide the sign column in the terminal window
   },
 })
+
+
+local default_model = "google/gemini-2.5-pro-preview-03-25"
+local available_models = {
+        "google/gemini-2.0-flash-001",
+        "google/gemini-2.5-pro-preview-03-25",
+        "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-3.7-sonnet:thinking",
+		"openai/gpt-4o-mini",
+        "openai/gpt-4o",
+        "openai/o1",
+        "openai/o1-mini",
+    }
+local current_model = default_model
+
+local function select_model()
+	    vim.ui.select(available_models, {
+			prompt = "Select  Model:",
+			}, function(choice)
+				if choice then
+					current_model = choice
+					vim.notify("Selected model: " .. current_model)
+				end
+			end)
+		end
+
+
+
+
+require("codecompanion").setup({
+			strategies = {
+				chat = {
+					adapter = "openrouter",
+				},
+				inline = {
+					adapter = "openrouter",
+				},
+			},
+			adapters = {
+				openrouter = function()
+					return require("codecompanion.adapters").extend("openai_compatible", {
+						env = {
+							url = "https://openrouter.ai/api",
+							api_key = "OPENROUTER_API_KEY_MINUET",
+							chat_url = "/v1/chat/completions",
+						},
+						schema = {
+							model = {
+								default = current_model,
+							},
+						},
+					})
+				end,
+			},
+		})
+
+vim.keymap.set({ "n", "v" }, "<leader>ck", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+vim.keymap.set(
+			{ "n", "v" },
+			"<leader>aa",
+			"<cmd>CodeCompanionChat Toggle<cr>",
+			{ noremap = true, silent = true }
+)
+vim.keymap.set("v", "ak", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>cs", select_model, { desc = "Select Gemini Model" })
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
 
 
 EOF
