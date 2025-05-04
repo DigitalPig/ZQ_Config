@@ -162,6 +162,7 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
+Plug 'folke/todo-comments.nvim'
 " Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 " Terminals
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
@@ -696,12 +697,12 @@ require("iron.core").setup {
       python = {
         command = { "ipython", "--no-autoindent" },
         format = require("iron.fts.common").bracketed_paste_python,
-        block_deviders = { "# %%", "#%%" },
+        block_dividers = { "# %%", "#%%" },
       },
     julia = {
       command = { "julia" },
       format = require("iron.fts.common").bracketed_paste_julia,
-      block_deviders = { "# %%", "#%%" },
+      block_dividers = { "# %%", "#%%" },
     },
     },
     -- How the repl window will be displayed
