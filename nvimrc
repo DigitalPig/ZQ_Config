@@ -969,7 +969,7 @@ local function select_model()
 		end
 
 
-
+require('todo-comments').setup({})
 
 require("codecompanion").setup({
 			strategies = {

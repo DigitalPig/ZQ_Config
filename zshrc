@@ -211,3 +211,5 @@ export AIDER_DARK_MODE=true
 export AIDER_ARCHITECT=true
 export AIDER_MODEL="openrouter/google/gemini-2.5-pro-preview-03-25"
 #export AIDER_EDITOR_MODEL="openrouter/anthropic/claude-3.7-sonnet"
+
+eval "$(pay-respects zsh --alias)"
