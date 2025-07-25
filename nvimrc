@@ -116,12 +116,13 @@ Plug 'olimorris/codecompanion.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'echasnovski/mini.pick'
 Plug 'ibhagwan/fzf-lua'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " Optional deps
 Plug 'HakonHarnes/img-clip.nvim'
 
 " Yay, pass source=true if you want to build from source
-" Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
+Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 " Plug 'CopilotC-Nvim/CopilotChat.nvim'
 Plug 'milanglacier/minuet-ai.nvim'
 " Plug 'olimorris/codecompanion.nvim'
@@ -147,8 +148,8 @@ Plug 'R-nvim/R.nvim'
 
 
 " Quarto
-Plug 'quarto-dev/quarto-nvim',
-Plug 'jmbuhr/otter.nvim',
+" Plug 'quarto-dev/quarto-nvim',
+" Plug 'jmbuhr/otter.nvim',
 Plug 'hrsh7th/nvim-cmp',
 " Plug 'nvim-treesitter/nvim-treesitter'
 
@@ -871,7 +872,17 @@ require('fzf-lua').setup()
 require('git-conflict').setup()
 require('img-clip').setup()
 -- require('avante_lib').load()
--- require('avante').setup()
+require('avante').setup({
+    provider = "openrouter",
+    vendors = {
+      openrouter = {
+        __inherited_from = 'openai',
+        endpoint = 'https://openrouter.ai/api/v1',
+        api_key_name = 'OPENROUTER_API_KEY',
+        model = 'google/gemini-2.5-pro-preview',
+      },
+    },
+})
 require('aider').setup()
 require('minuet').setup({
     cmp = {
@@ -895,34 +906,34 @@ require('minuet').setup({
 
 require('minuet').make_cmp_map()
 
-require('quarto').setup{
-  debug = false,
-  closePreviewOnExit = true,
-  lspFeatures = {
-    enabled = true,
-    chunks = "curly",
-    languages = { "r", "python", "julia", "bash", "html" },
-    diagnostics = {
-      enabled = true,
-      triggers = { "BufWritePost" },
-    },
-    completion = {
-      enabled = true,
-    },
-  },
-  codeRunner = {
-    enabled = true,
-    default_method = "slime", -- "molten", "slime", "iron" or <function>
-    ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-    -- Takes precedence over `default_method`
-    never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
-  },
-}
-
-local quarto = require('quarto')
-quarto.setup()
-vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
-
+--require('quarto').setup{
+--  debug = false,
+--  closePreviewOnExit = true,
+--  lspFeatures = {
+--    enabled = true,
+--    chunks = "curly",
+--    languages = { "r", "python", "julia", "bash", "html" },
+--    diagnostics = {
+--      enabled = true,
+--      triggers = { "BufWritePost" },
+--    },
+--    completion = {
+--      enabled = true,
+--    },
+--  },
+--  codeRunner = {
+--    enabled = true,
+--    default_method = "slime", -- "molten", "slime", "iron" or <function>
+--    ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+--    -- Takes precedence over `default_method`
+--    never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
+--  },
+--}
+--
+--local quarto = require('quarto')
+--quarto.setup()
+--vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
+--
 require("cmp_r").setup({ })
 
 require("neotest").setup({
@@ -1001,7 +1012,7 @@ require("codecompanion").setup({
 vim.keymap.set({ "n", "v" }, "<leader>ck", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 vim.keymap.set(
 			{ "n", "v" },
-			"<leader>aa",
+			"<leader>cc",
 			"<cmd>CodeCompanionChat Toggle<cr>",
 			{ noremap = true, silent = true }
 )
