@@ -58,6 +58,7 @@ return {
           end, { "i", "s" }),
         }),
         sources = {
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "latex_symbols" },
@@ -93,9 +94,11 @@ return {
               Event = "",
               Operator = "󰆕",
               TypeParameter = "󰅲",
+              Copilot = "🤖",
             }
             vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
             vim_item.menu = ({
+              copilot = "[Copilot]",
               nvim_lsp = "[LSP]",
               luasnip = "[Snippet]",
               buffer = "[Buffer]",
