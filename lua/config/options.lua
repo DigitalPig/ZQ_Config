@@ -55,3 +55,6 @@ vim.opt.compatible = false
 -- Filetype
 vim.cmd("filetype on")
 vim.cmd("filetype plugin on")
+
+-- Neovim Python Path
+vim.g.python3_host_prog = '/usr/bin/python3'

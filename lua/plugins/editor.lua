@@ -91,7 +91,7 @@ return {
   -- Toggle terminal
   {
     "akinsho/toggleterm.nvim",
-    cmd = { "ToggleTerm", "TermExec" },
+    event = "VeryLazy",
     config = function()
       require("toggleterm").setup({
         size = 20,
@@ -102,13 +102,33 @@ return {
         start_in_insert = true,
         insert_mappings = true,
         persist_size = true,
-        direction = "float",
+        direction = "horizontal",
         close_on_exit = true,
         shell = vim.o.shell,
+      })
+
+      -- Manual keymap as backup
+      vim.keymap.set("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { noremap = true, silent = true, desc = "Toggle Terminal" })
+      vim.keymap.set("t", "<C-\\>", "<cmd>ToggleTerm<cr>", { noremap = true, silent = true, desc = "Toggle Terminal" })
+
+      -- Lazygit integration
+      local Terminal = require("toggleterm.terminal").Terminal
+      local lazygit = Terminal:new({
+        cmd = "lazygit",
+        hidden = true,
+        direction = "float",
         float_opts = {
           border = "curved",
         },
       })
+
+      function _lazygit_toggle()
+        lazygit:toggle()
+      end
+
+      -- Lazygit keymap
+      vim.keymap.set("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", 
+        { noremap = true, silent = true, desc = "Toggle Lazygit" })
     end,
   },
 

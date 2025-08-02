@@ -1,14 +1,4 @@
 return {
-  -- Snippet management
-  {
-    "SirVer/ultisnips",
-    config = function()
-      vim.g.UltiSnipsExpandTrigger = "<F2>"
-      vim.g.UltiSnipsJumpForwardTrigger = "<c-b>"
-      vim.g.UltiSnipsJumpBackwardTrigger = "<c-z>"
-      vim.g.UltiSnipsEditSplit = "vertical"
-    end,
-  },
 
   -- Code commenting
   {
