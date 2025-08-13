@@ -157,9 +157,13 @@ return {
     ft = { "python", "julia", "r", "scheme", "lisp" },
     config = function()
       local iron = require("iron.core")
+      local view = require("iron.view")
+      local common = require("iron.fts.common")
       iron.setup({
         config = {
           scratch_repl = true,
+          should_map_plug = false,
+          focus_on = "previous",
           repl_definition = {
             sh = {
               command = { "zsh" }
@@ -173,7 +177,7 @@ return {
               command = { "julia" }
             },
           },
-          repl_open_cmd = require("iron.view").bottom(40),
+          repl_open_cmd = view.split.botright(40),
         },
         keymaps = {
               toggle_repl = "<space>rr", -- toggles the repl open and closed.
@@ -204,6 +208,25 @@ return {
         },
         ignore_blank_lines = true,
       })
+      
+      -- Ensure proper window navigation after REPL operations
+      local function ensure_main_window_focus()
+        vim.cmd('wincmd p')
+      end
+      
+      -- Add autocommands to prevent focus stealing
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "IronReplOpened",
+        callback = function()
+          vim.defer_fn(ensure_main_window_focus, 100)
+        end,
+      })
+      
+      -- Additional keymaps for explicit window navigation
+      vim.keymap.set("n", "<C-w>j", "<C-w>j", { desc = "Move to window below" })
+      vim.keymap.set("n", "<C-w>k", "<C-w>k", { desc = "Move to window above" })
+      vim.keymap.set("n", "<C-w><C-j>", "<C-w>j", { desc = "Move to window below" })
+      vim.keymap.set("n", "<C-w><C-k>", "<C-w>k", { desc = "Move to window above" })
     end,
   },
 
