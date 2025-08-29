@@ -26,6 +26,12 @@ return {
       local on_attach = function(client, bufnr)
         local opts = { buffer = bufnr, silent = true }
         
+        -- Enable inlay hints if supported
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end
+        
+        
         -- LSP keymaps
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -39,16 +45,21 @@ return {
         vim.keymap.set("n", "<space>f", function()
           vim.lsp.buf.format({ async = true })
         end, opts)
+        
+        -- Toggle inlay hints
+        vim.keymap.set("n", "<space>ih", function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+        end, opts)
       end
 
       -- Configure individual language servers
       local servers = {
         "pyright",
         "lua_ls",
-        "julials",
         "texlab",
       }
       -- Note: rust_analyzer is handled by rustaceanvim plugin
+      -- Note: julials has custom configuration below
 
       for _, server in ipairs(servers) do
         lspconfig[server].setup({
@@ -56,6 +67,20 @@ return {
           on_attach = on_attach,
         })
       end
+
+      -- Pyright specific configuration
+      lspconfig.pyright.setup({
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          -- Call the common on_attach function
+          on_attach(client, bufnr)
+          
+          -- Pyright has limited inlay hints support
+          if client.supports_method("textDocument/inlayHint") then
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+          end
+        end,
+      })
 
       -- Lua LSP specific configuration
       lspconfig.lua_ls.setup({
@@ -78,6 +103,56 @@ return {
             },
           },
         },
+      })
+
+      -- Julia LSP specific configuration
+      lspconfig.julials.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          julia = {
+            symbolCacheDownload = true,
+            lint = {
+              run = true,
+            },
+            format = {
+              calls = true,
+            },
+          },
+        },
+        init_options = {
+          runlinter = false,  -- Disable linter on startup for faster startup
+        },
+        cmd = {
+          "julia",
+          "--startup-file=no",
+          "--history-file=no",
+          "--project=~/.julia/environments/nvim-lspconfig",
+          "-e",
+          [[
+            using LanguageServer
+            depot_path = get(ENV, "JULIA_DEPOT_PATH", "")
+            project_path = dirname(something(
+              Base.load_path_expand((
+                p = get(ENV, "JULIA_PROJECT", nothing);
+                p === nothing ? nothing : isempty(p) ? nothing : p
+              )),
+              Base.current_project(),
+              get(Base.load_path(), 1, nothing),
+              Base.load_path_expand("@v#.#"),
+            ))
+            @info "Starting Julia Language Server" VERSION pwd() project_path depot_path
+            server = LanguageServer.LanguageServerInstance(stdin, stdout, project_path, depot_path)
+            server.runlinter = true
+            run(server)
+          ]]
+        },
+        on_new_config = function(new_config, _)
+          local julia_cmd = vim.fn.expand("~/.juliaup/bin/julia")
+          if vim.fn.executable(julia_cmd) == 1 then
+            new_config.cmd[1] = julia_cmd
+          end
+        end,
       })
     end,
   },

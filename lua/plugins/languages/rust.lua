@@ -20,6 +20,11 @@ return {
             vim.keymap.set("n", "<C-space>", function()
               vim.cmd.RustLsp('codeAction')
             end, { silent = true, buffer = bufnr })
+            
+            -- Toggle inlay hints
+            vim.keymap.set("n", "<space>ih", function()
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+            end, { silent = true, buffer = bufnr })
           end,
           default_settings = {
             ['rust-analyzer'] = {
