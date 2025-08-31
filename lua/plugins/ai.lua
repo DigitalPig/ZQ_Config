@@ -96,14 +96,44 @@ return {
           },
         },
         adapters = {
-          anthropic = function()
-            return require("codecompanion.adapters").extend("anthropic", {
-              env = {
-                api_key = "ANTHROPIC_API_KEY",
-              },
-            })
-          end,
+          http = {
+            anthropic = function()
+              return require("codecompanion.adapters").extend("anthropic", {
+                env = {
+                  api_key = "ANTHROPIC_API_KEY",
+                },
+              })
+            end,
+          },
         },
+      })
+    end,
+  },
+
+  -- MCP Hub (Model Context Protocol Hub)
+  {
+    "ravitemer/mcphub.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest",
+    config = function()
+      require("mcphub").setup({
+            system_prompt = function()
+        local hub = require("mcphub").get_hub_instance()
+        return hub and hub:get_active_servers_prompt() or ""
+        end,
+    -- Using function prevents requiring mcphub before it's loaded
+    custom_tools = function()
+        return {
+            require("mcphub.extensions.avante").mcp_tool(),
+        }
+    end,
+    extensions = {
+        avante = {
+            make_slash_commands = true, -- make /slash commands from MCP server prompts
+        }
+    }
       })
     end,
   },
@@ -133,6 +163,26 @@ return {
           model = 'anthropic/claude-sonnet-4',
     },
       },
+      acp_providers = {
+        ["gemini-cli"] = {
+          command = "gemini",
+          args = { "--experimental-acp" },
+          env = {
+            NODE_NO_WARNINGS = "1",
+            GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+          },
+        },
+    ["claude-code"] = {
+          command = "npx",
+          args = { "acp-claude-code" },
+          env = {
+            NODE_NO_WARNINGS = "1",
+            ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+            ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE="/home/linuxbrew/.linuxbrew/bin/claude",
+            ACP_PERMISSION_MODE="acceptEdits"
+          },
+        },
+  },
       behaviour = {
         auto_suggestions = false,
         auto_set_highlight_group = true,
