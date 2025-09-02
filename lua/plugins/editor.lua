@@ -169,7 +169,7 @@ return {
               command = { "zsh" }
             },
             python = {
-              command = { "python3" },
+              command = { "ipython3" },
               format = require("iron.fts.common").bracketed_paste,
               block_dividers = { "# %%", "#%%" },
             },
