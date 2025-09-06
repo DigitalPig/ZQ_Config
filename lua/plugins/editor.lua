@@ -34,6 +34,9 @@ return {
           dotfiles = false,
         },
       })
+      
+      -- F3 keymap for NvimTreeToggle
+      vim.keymap.set("n", "<F3>", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true, desc = "Toggle NvimTree" })
     end,
   },
 

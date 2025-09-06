@@ -164,6 +164,12 @@ return {
     build = ":MasonUpdate",
     config = function()
       require("mason").setup({
+        ensure_installed = {
+          "stylua",
+          "ruff",
+          "isort",
+          "prettier",
+        },
         ui = {
           icons = {
             package_installed = "✓",
