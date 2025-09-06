@@ -84,3 +84,6 @@ keymap("n", "<leader>ll", ":LeetCodeList<cr>", opts)
 keymap("n", "<leader>lt", ":LeetCodeTest<cr>", opts)
 keymap("n", "<leader>ls", ":LeetCodeSubmit<cr>", opts)
 keymap("n", "<leader>li", ":LeetCodeSignIn<cr>", opts)
+
+-- Format with conform.nvim
+keymap("n", "<leader>fm", "<cmd>ConformFormat<cr>", { desc = "Format file" })
