@@ -203,7 +203,7 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 alias conda=micromamba
 alias mamba=micromamba
-
+alias lg=lazygit
 
 # Aider related configuration
 
