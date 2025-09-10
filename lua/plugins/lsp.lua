@@ -109,6 +109,7 @@ return {
       lspconfig.julials.setup({
         capabilities = capabilities,
         on_attach = on_attach,
+        filetypes = { "julia" },
         settings = {
           julia = {
             symbolCacheDownload = true,

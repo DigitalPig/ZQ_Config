@@ -213,3 +213,29 @@ export AIDER_MODEL="openrouter/google/gemini-2.5-pro-preview-03-25"
 #export AIDER_EDITOR_MODEL="openrouter/anthropic/claude-3.7-sonnet"
 
 eval "$(pay-respects zsh --alias)"
+
+kimi() {
+    (
+        export ANTHROPIC_BASE_URL=https://api.moonshot.ai/anthropic
+        export ANTHROPIC_AUTH_TOKEN=$KIMI_API_KEY
+        claude "$@"
+    )
+}
+
+zai() {
+    (
+        export ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic
+        export ANTHROPIC_AUTH_TOKEN=$Z_API_KEY
+        claude "$@"
+    )
+}
+
+dseek() {
+    (
+        export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+        export ANTHROPIC_AUTH_TOKEN=${DEEPSEEK_API_KEY}
+        export ANTHROPIC_MODEL=deepseek-chat
+        export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat        
+        claude "$@"
+    )
+}
