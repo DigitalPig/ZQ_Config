@@ -158,7 +158,7 @@ return {
 		lazy = false,
 		version = false,
 		opts = {
-			provider = "openrouter_qwen",
+			provider = "openrouter",
 			auto_suggestions_provider = "claude",
 			providers = {
 				claude = {
@@ -174,12 +174,6 @@ return {
 					endpoint = "https://openrouter.ai/api/v1",
 					api_key_name = "OPENROUTER_API_KEY",
 					model = "anthropic/claude-sonnet-4",
-				},
-				openrouter_qwen = {
-					__inherited_from = "openai",
-					endpoint = "https://openrouter.ai/api/v1",
-					api_key_name = "OPENROUTER_API_KEY",
-					model = "qwen/qwen3-coder",
 				},
 			},
 			acp_providers = {
