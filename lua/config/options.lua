@@ -58,3 +58,18 @@ vim.cmd("filetype plugin on")
 
 -- Neovim Python Path
 vim.g.python3_host_prog = '/usr/bin/python3'
+
+-- Diagnostic configuration
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+})

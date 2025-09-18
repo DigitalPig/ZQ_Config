@@ -162,4 +162,30 @@ return {
       vim.g.go_highlight_extra_types = 1
     end,
   },
+
+  -- Typst support
+  {
+    "kaarmu/typst.vim",
+    ft = { "typst" },
+    config = function()
+      vim.g.typst_pdf_viewer = "zathura"
+    end,
+  },
+
+  {
+    "chomosuke/typst-preview.nvim",
+    ft = { "typst" },
+    build = function() require("typst-preview").update() end,
+    config = function()
+      require("typst-preview").setup({
+        open_cmd = "zathura %s",
+        dependencies_bin = {
+          ["typst-preview"] = "tinymist",
+        },
+        get_root = function(path_of_main_file)
+          return vim.fn.fnamemodify(path_of_main_file, ":h")
+        end,
+      })
+    end,
+  },
 }
