@@ -9,8 +9,16 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			local lspconfig = require("lspconfig")
+
 			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
+			-- Configure diagnostics to be hidden by default
+			vim.diagnostic.config({
+				virtual_text = false,  -- Hide inline diagnostics
+				signs = true,          -- Keep gutter signs
+				underline = true,      -- Keep underlines
+				update_in_insert = false,
+			})
 
 			-- Global diagnostic keymaps
 			local opts = { noremap = true, silent = true }
@@ -51,24 +59,14 @@ return {
 				end, opts)
 			end
 
-			-- Configure individual language servers
-			local servers = {
-				"basedpyright",
-				"lua_ls",
-				"texlab",
+			-- Configure TexLab
+			vim.lsp.config.texlab = {
+				capabilities = capabilities,
+				on_attach = on_attach,
 			}
-			-- Note: rust_analyzer is handled by rustaceanvim plugin
-			-- Note: julials uses Mason's julia-lsp wrapper below
-
-			for _, server in ipairs(servers) do
-				lspconfig[server].setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
-			end
 
 			-- BasedPyright specific configuration
-			lspconfig.basedpyright.setup({
+			vim.lsp.config.basedpyright = {
 				capabilities = capabilities,
 				on_attach = on_attach,
 				settings = {
@@ -81,10 +79,10 @@ return {
 						}
 					}
 				}
-			})
+			}
 
 			-- Lua LSP specific configuration
-			lspconfig.lua_ls.setup({
+			vim.lsp.config.lua_ls = {
 				capabilities = capabilities,
 				on_attach = on_attach,
 				settings = {
@@ -104,10 +102,10 @@ return {
 						},
 					},
 				},
-			})
+			}
 
 			-- Julia LSP configuration (using Mason's julia-lsp)
-			lspconfig.julials.setup({
+			vim.lsp.config.julials = {
 				capabilities = capabilities,
 				on_attach = on_attach,
 				cmd = function()
@@ -121,7 +119,7 @@ return {
 						return { mason_julia_lsp }
 					end
 				end,
-			})
+			}
 		end,
 	},
 
@@ -133,6 +131,9 @@ return {
 		config = function()
 			require("mason").setup({
 				ensure_installed = {
+					"basedpyright",
+					"lua-language-server",
+					"texlab",
 					"stylua",
 					"ruff",
 					"isort",
