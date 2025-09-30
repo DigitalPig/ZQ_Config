@@ -245,3 +245,4 @@ alias nvide=$HOME/.local/bin/neovide.AppImage
 
 # opencode
 export PATH=/home/digitalpig/.opencode/bin:$PATH
+export EDITOR=neovim

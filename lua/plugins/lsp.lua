@@ -9,14 +9,13 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-
 			local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 			-- Configure diagnostics to be hidden by default
 			vim.diagnostic.config({
-				virtual_text = false,  -- Hide inline diagnostics
-				signs = true,          -- Keep gutter signs
-				underline = true,      -- Keep underlines
+				virtual_text = false, -- Hide inline diagnostics
+				signs = true, -- Keep gutter signs
+				underline = true, -- Keep underlines
 				update_in_insert = false,
 			})
 
@@ -76,9 +75,9 @@ return {
 							functionReturnTypes = true,
 							callArgumentNames = "all",
 							pytestParameters = true,
-						}
-					}
-				}
+						},
+					},
+				},
 			}
 
 			-- Lua LSP specific configuration
@@ -158,7 +157,6 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"basedpyright",
 					"lua_ls",
 					"texlab",
 				},
