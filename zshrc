@@ -118,7 +118,6 @@ export PYSPARK_PYTHON=python3
 #export PYSPARK_DRIVER_PYTHON=jupyter
 #export PYSPARK_DRIVER_PYTHON_OPTS="console"
 #export SPARK_SUBMIT_OPTIONS=$SPARK_OPTS
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 # Julia thread setting
 export JULIA_NUM_THREADS=3
@@ -143,7 +142,6 @@ export SPARK_SUBMIT_OPTIONS=$SPARK_OPTS
 
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/linuxbrew/.linuxbrew/Cellar/vault/1.3.4/bin/vault vault
 
 # Some alias
 alias sicp="racket -l r5rs -l sicp --repl"
@@ -162,7 +160,6 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/x86_64-linux-gnu/pkgconfig/:/us
 
 export QT_IM_MODULE=fcitx
 
-#export FZF_BASE=/home/linuxbrew/.linuxbrew/bin/
 
 # >>> juliaup initialize >>>
 
@@ -241,8 +238,12 @@ dseek() {
     )
 }
 
-alias nvide=$HOME/.local/bin/neovide.AppImage
-
 # opencode
-export PATH=/home/digitalpig/.opencode/bin:$PATH
+export PATH=/home/digitalpig/.opencode/bin:/home/digitalpig/.gem/ruby/3.4.0/bin:$PATH
 export EDITOR=neovim
+
+alias nvide=neovide
+alias claude="/home/digitalpig/.claude/local/claude"
+
+export DIFFPROG=nvim
+export npm_config_prefix="$HOME/.local"

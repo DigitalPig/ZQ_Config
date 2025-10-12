@@ -70,11 +70,17 @@ return {
 				on_attach = on_attach,
 				settings = {
 					basedpyright = {
-						inlayHints = {
-							variableTypes = true,
-							functionReturnTypes = true,
-							callArgumentNames = "all",
-							pytestParameters = true,
+						analysis = {
+							inlayHints = {
+								variableTypes = false,
+								functionReturnTypes = false,
+								callArgumentNames = false,
+							},
+							diagnosticMode = "openFilesOnly",
+							typeCheckingMode = "basic",
+							useLibraryCodeForTypes = false,
+							autoSearchPaths = true,
+							exclude = { "**/node_modules", "**/.venv", "**/build" },
 						},
 					},
 				},
@@ -135,7 +141,6 @@ return {
 					"texlab",
 					"stylua",
 					"ruff",
-					"isort",
 					"prettier",
 				},
 				ui = {
@@ -157,7 +162,8 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"lua_ls",
+					"basedpyright",
+					"ruff",
 					"texlab",
 				},
 				automatic_installation = true,
