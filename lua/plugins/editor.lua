@@ -293,7 +293,7 @@ return {
 							command = { "julia" },
 						},
 					},
-					repl_open_cmd = view.split.botright(40),
+					repl_open_cmd = view.split.vertical.rightbelow("%35"),
 				},
 				keymaps = {
 					toggle_repl = "<space>rr", -- toggles the repl open and closed.
