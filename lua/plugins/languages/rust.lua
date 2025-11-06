@@ -3,9 +3,14 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5",
-    lazy = false,
     ft = { "rust" },
     config = function()
+      -- Get capabilities for LSP
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      if pcall(require, "cmp_nvim_lsp") then
+        capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+      end
+
       vim.g.rustaceanvim = {
         inlay_hints = {
           highlight = "NonText",
@@ -16,11 +21,17 @@ return {
           },
         },
         server = {
+          capabilities = capabilities,
           on_attach = function(client, bufnr)
+            -- Enable inlay hints if supported
+            if client.server_capabilities.inlayHintProvider then
+              vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end
+
             vim.keymap.set("n", "<C-space>", function()
               vim.cmd.RustLsp('codeAction')
             end, { silent = true, buffer = bufnr })
-            
+
             -- Toggle inlay hints
             vim.keymap.set("n", "<space>ih", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
