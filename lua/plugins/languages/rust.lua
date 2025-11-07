@@ -23,18 +23,21 @@ return {
         server = {
           capabilities = capabilities,
           on_attach = function(client, bufnr)
-            -- Enable inlay hints if supported
+            -- Enable inlay hints with delay to avoid race conditions
             if client.server_capabilities.inlayHintProvider then
-              vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+              vim.defer_fn(function()
+                pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+              end, 100)
             end
 
             vim.keymap.set("n", "<C-space>", function()
               vim.cmd.RustLsp('codeAction')
             end, { silent = true, buffer = bufnr })
 
-            -- Toggle inlay hints
+            -- Toggle inlay hints with error handling
             vim.keymap.set("n", "<space>ih", function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+              local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+              pcall(vim.lsp.inlay_hint.enable, not enabled, { bufnr = bufnr })
             end, { silent = true, buffer = bufnr })
           end,
           default_settings = {
