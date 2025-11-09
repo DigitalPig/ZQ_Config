@@ -11,6 +11,14 @@ return {
         capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
       end
 
+      -- Fix sync issue: Use full document sync instead of incremental
+      capabilities.textDocument.synchronization = {
+        dynamicRegistration = false,
+        willSave = false,
+        willSaveWaitUntil = false,
+        didSave = true,
+      }
+
       vim.g.rustaceanvim = {
         inlay_hints = {
           highlight = "NonText",
