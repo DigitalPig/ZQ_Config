@@ -139,7 +139,8 @@ return {
 		config = function()
 			require("mason").setup({
 				ensure_installed = {
-					"basedpyright",
+					--"basedpyright",
+					"ty",
 					"lua-language-server",
 					"texlab",
 					"stylua",
@@ -165,7 +166,8 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"basedpyright",
+					--"basedpyright",
+					"ty",
 					"ruff",
 					"texlab",
 				},
