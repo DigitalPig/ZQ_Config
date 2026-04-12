@@ -111,7 +111,6 @@ source $ZSH/oh-my-zsh.sh
 # Setup for Spark
 SPARK_HOME=/opt/spark
 export PATH=/home/digitalpig/.local/bin:/snap/bin:$SPARK_HOME/bin:/opt/zeppelin/bin:$PATH
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 # Spark OPTS can change
 #export SPARK_OPTS='--jars /home/digitalpig/Coding/xgboost/jvm-packages/xgboost4j-spark/target/xgboost4j-spark-0.7-jar-with-dependencies.jar' 
 export PYSPARK_PYTHON=python3
@@ -132,7 +131,7 @@ alias python="python3"
 # Spark Conf
 SPARK_HOME=/opt/spark
 export PATH=$SPARK_HOME/bin:/opt/zeppelin/bin:$PATH #:/opt/gurobi/linux64/bin
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+#export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 # Spark OPTS can change
 #export SPARK_OPTS='--jars /home/digitalpig/Coding/xgboost/jvm-packages/xgboost4j-spark/target/xgboost4j-spark-0.7-jar-with-dependencies.jar --packages ai.h2o:sparkling-water-package_2.11:2.2.10' 
 export PYSPARK_PYTHON=/opt/anaconda3/bin/python
