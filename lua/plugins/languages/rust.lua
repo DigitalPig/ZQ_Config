@@ -3,22 +3,9 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5",
+    lazy = false,
     ft = { "rust" },
     config = function()
-      -- Get capabilities for LSP
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      if pcall(require, "cmp_nvim_lsp") then
-        capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-      end
-
-      -- Fix sync issue: Use full document sync instead of incremental
-      capabilities.textDocument.synchronization = {
-        dynamicRegistration = false,
-        willSave = false,
-        willSaveWaitUntil = false,
-        didSave = true,
-      }
-
       vim.g.rustaceanvim = {
         inlay_hints = {
           highlight = "NonText",
@@ -29,23 +16,9 @@ return {
           },
         },
         server = {
-          capabilities = capabilities,
           on_attach = function(client, bufnr)
-            -- Enable inlay hints with delay to avoid race conditions
-            if client.server_capabilities.inlayHintProvider then
-              vim.defer_fn(function()
-                pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
-              end, 100)
-            end
-
             vim.keymap.set("n", "<C-space>", function()
               vim.cmd.RustLsp('codeAction')
-            end, { silent = true, buffer = bufnr })
-
-            -- Toggle inlay hints with error handling
-            vim.keymap.set("n", "<space>ih", function()
-              local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
-              pcall(vim.lsp.inlay_hint.enable, not enabled, { bufnr = bufnr })
             end, { silent = true, buffer = bufnr })
           end,
           default_settings = {

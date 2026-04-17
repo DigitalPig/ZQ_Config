@@ -53,6 +53,57 @@ autocmd("VimResized", {
   end,
 })
 
+-- Database completion setup for SQL files
+autocmd("FileType", {
+  pattern = { "sql", "mysql", "plsql" },
+  callback = function()
+    local cmp = require("cmp")
+    cmp.setup.buffer({
+      sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" },
+      },
+    })
+  end,
+})
+
+-- Diff view highlight overrides
+autocmd("ColorScheme", {
+  callback = function()
+    local colors = {
+      '#1a1b26', -- [1] background
+      '#f7768e', -- [2] red (deletions)
+      '#9ece6a', -- [3] green (additions)
+      '#7aa2f7', -- [4] blue (changes)
+      '#e0af68', -- [5] yellow
+      '#bb9af7', -- [6] purple (selected)
+      '#7dcfff', -- [7] cyan
+      '#ff9e64', -- [8] orange (untracked)
+      '#565f89', -- [9] comment/dim (ignored/separator)
+    }
+
+    vim.api.nvim_set_hl(0, 'DiffAdd',    { bg = '#34462F' })
+    vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#462F2F' })
+    vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#2F4146' })
+    vim.api.nvim_set_hl(0, 'DiffText',   { bg = '#463C2F' })
+
+    vim.api.nvim_set_hl(0, 'DiffAdded',   { fg = colors[3], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffRemoved', { fg = colors[2], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffChanged', { fg = colors[4], bold = true })
+
+    vim.api.nvim_set_hl(0, 'DiffviewWinSeparator',      { fg = colors[9] })
+    vim.api.nvim_set_hl(0, 'DiffviewDiffDelete',         { fg = colors[9] })
+    vim.api.nvim_set_hl(0, 'DiffviewFilePanelSelected',  { fg = colors[6] })
+
+    vim.api.nvim_set_hl(0, 'DiffviewStatusAdded',     { fg = colors[3], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffviewStatusUntracked', { fg = colors[8], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffviewStatusModified',  { fg = colors[4], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffviewStatusRenamed',   { fg = colors[3], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffviewStatusDeleted',   { fg = colors[2], bold = true })
+    vim.api.nvim_set_hl(0, 'DiffviewStatusIgnored',   { fg = colors[9], bold = true })
+  end,
+})
+
 -- Close certain filetypes with q
 autocmd("FileType", {
   pattern = {

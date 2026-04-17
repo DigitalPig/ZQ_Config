@@ -198,6 +198,7 @@ return {
       "rcarriga/nvim-dap-ui",
     },
     config = function()
+      -- Updated path for macOS from nvimrc diff (changed from /home/digitalpig to /Users/zqli)
       local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
       require("dap-python").setup(path)
     end,
@@ -298,7 +299,7 @@ return {
     },
     config = function(_, opts)
       require("leetcode").setup(opts)
-      
+
       -- Set up global variables for compatibility
       vim.g.leetcode_solution_filetype = "python3"
       vim.g.leetcode_username = "digitalpig"

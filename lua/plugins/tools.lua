@@ -1,31 +1,5 @@
 return {
 
-  -- Formatter
-  {
-    'stevearc/conform.nvim',
-    event = { "BufWritePre" },
-    cmd = { "ConformInfo" },
-    opts = {
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        python = { 'isort', 'ruff' },
-        javascript = { 'prettier' },
-        typescript = { 'prettier' },
-        javascriptreact = { 'prettier' },
-        typescriptreact = { 'prettier' },
-        html = { 'prettier' },
-        css = { 'prettier' },
-        json = { 'prettier' },
-        yaml = { 'prettier' },
-        markdown = { 'prettier' },
-      },
-      format_on_save = {
-        timeout_ms = 3000,
-        lsp_fallback = true,
-      },
-    },
-  },
-
   -- Code commenting
   {
     "numToStr/Comment.nvim",
@@ -161,9 +135,9 @@ return {
       
       -- Add key group descriptions
       wk.add({
+        { "<leader>b", group = "Buffer" },
         { "<leader>f", group = "Find" },
         { "<leader>g", group = "Git" },
-        { "<leader>l", group = "LeetCode" },
         { "<leader>d", group = "Debug" },
         { "<leader>t", group = "Test" },
         { "<leader>x", group = "Trouble" },
@@ -171,6 +145,7 @@ return {
         { "<leader>c", group = "Code" },
         { "<leader>s", group = "Search/LSP" },
         { "<leader>p", group = "Python/REPL" },
+        { "<leader>o", group = "Octo/GitHub" },
       })
     end,
   },
@@ -307,6 +282,104 @@ return {
           },
         },
       })
+    end,
+  },
+
+  -- GitHub integration with Octo
+  {
+    "pwntester/octo.nvim",
+    cmd = "Octo",
+    opts = {
+      picker = "telescope",
+      enable_builtin = true,
+    },
+    keys = {
+      {
+        "<leader>oi",
+        "<CMD>Octo issue list<CR>",
+        desc = "List GitHub Issues",
+      },
+      {
+        "<leader>op",
+        "<CMD>Octo pr list<CR>",
+        desc = "List GitHub PullRequests",
+      },
+      {
+        "<leader>od",
+        "<CMD>Octo discussion list<CR>",
+        desc = "List GitHub Discussions",
+      },
+      {
+        "<leader>on",
+        "<CMD>Octo notification list<CR>",
+        desc = "List GitHub Notifications",
+      },
+      {
+        "<leader>os",
+        function()
+          require("octo.utils").create_base_search_command { include_current_repo = true }
+        end,
+        desc = "Search GitHub",
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+
+  -- Git diff viewer
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffviewFileHistory" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+
+  -- TODO comments (removed from nvimrc diff, but keeping for reference)
+  -- {
+  --   "folke/todo-comments.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require("todo-comments").setup({})
+  --   end,
+  -- },
+
+  -- Yazi file manager integration
+  {
+    "mikavilpas/yazi.nvim",
+    version = "*",
+    event = "VeryLazy",
+    dependencies = {
+      { "nvim-lua/plenary.nvim", lazy = true },
+    },
+    keys = {
+      {
+        "<leader>-",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
+      },
+      {
+        "<leader>cw",
+        "<cmd>Yazi cwd<cr>",
+        desc = "Open the file manager in nvim's working directory",
+      },
+      {
+        "<c-up>",
+        "<cmd>Yazi toggle<cr>",
+        desc = "Resume the last yazi session",
+      },
+    },
+    ---@type YaziConfig | {}
+    opts = {
+      open_for_directories = false,
+      keymaps = {
+        show_help = "<f1>",
+      },
+    },
+    init = function()
+      vim.g.loaded_netrwPlugin = 1
     end,
   },
 }
