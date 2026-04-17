@@ -24,6 +24,7 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 -- Visual
+vim.opt.fillchars:append({ diff = " " })
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80,120"

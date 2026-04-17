@@ -259,6 +259,53 @@ return {
 		cmd = "Magit",
 	},
 
+	-- Diff viewer and file history
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffviewFileHistory" },
+		keys = {
+			{ "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
+			{ "<leader>gV", "<cmd>DiffviewClose<cr>", desc = "Diffview close" },
+			{ "<leader>gH", "<cmd>DiffviewFileHistory %<cr>", desc = "File history (current file)" },
+			{ "<leader>gFH", "<cmd>DiffviewFileHistory<cr>", desc = "File history (repo)" },
+		},
+		opts = {
+			enhanced_diff_hl = true,
+			view = {
+				default = {
+					layout = "diff2_horizontal",
+					winbar_info = true,
+				},
+				file_history = {
+					layout = "diff2_horizontal",
+					winbar_info = true,
+				},
+				merge_tool = {
+					layout = "diff3_horizontal",
+					disable_diagnostics = true,
+				},
+			},
+			file_panel = {
+				listing_style = "tree",
+				tree_options = {
+					flatten_dirs = true,
+					folder_statuses = "only_folded",
+				},
+				win_config = {
+					position = "left",
+					width = 35,
+				},
+			},
+			file_history_panel = {
+				win_config = {
+					position = "bottom",
+					height = 16,
+				},
+			},
+		},
+	},
+
 	{
 		"akinsho/git-conflict.nvim",
 		event = "BufReadPre",
