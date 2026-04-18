@@ -53,6 +53,21 @@ autocmd("VimResized", {
   end,
 })
 
+-- Window navigation inside the Claude Code terminal
+autocmd("TermOpen", {
+  callback = function(event)
+    local bufname = vim.api.nvim_buf_get_name(event.buf)
+    if not bufname:match("claude") then
+      return
+    end
+    local map_opts = { buffer = event.buf, silent = true }
+    vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], map_opts)
+    vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], map_opts)
+    vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], map_opts)
+    vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], map_opts)
+  end,
+})
+
 -- Close certain filetypes with q
 autocmd("FileType", {
   pattern = {
