@@ -1,351 +1,390 @@
 return {
-	-- GitHub Copilot
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				panel = {
-					enabled = true,
-					auto_refresh = false,
-					keymap = {
-						jump_prev = "[[",
-						jump_next = "]]",
-						accept = "<CR>",
-						refresh = "gr",
-						open = "<M-CR>",
-					},
-					layout = {
-						position = "bottom",
-						ratio = 0.4,
-					},
-				},
-				suggestion = {
-					enabled = true,
-					auto_trigger = false,
-					debounce = 75,
-					keymap = {
-						accept = "<M-l>",
-						accept_word = false,
-						accept_line = false,
-						next = "<M-]>",
-						prev = "<M-[>",
-						dismiss = "<C-]>",
-					},
-				},
-				filetypes = {
-					yaml = false,
-					markdown = false,
-					help = false,
-					gitcommit = false,
-					gitrebase = false,
-					hgcommit = false,
-					svn = false,
-					cvs = false,
-					["."] = false,
-				},
-				copilot_node_command = "node",
-				server_opts_overrides = {},
-			})
-		end,
-	},
+  -- GitHub Copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = "[[",
+            jump_next = "]]",
+            accept = "<CR>",
+            refresh = "gr",
+            open = "<M-CR>"
+          },
+          layout = {
+            position = "bottom",
+            ratio = 0.4
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = false,
+          debounce = 75,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
+        copilot_node_command = 'node',
+        server_opts_overrides = {},
+      })
+    end,
+  },
 
-	-- Copilot completion integration
-	{
-		"zbirenbaum/copilot-cmp",
-		dependencies = { "copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup()
-		end,
-	},
+  -- Copilot completion integration
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
 
-	-- Claude Code companion
-	{
-		"coder/claudecode.nvim",
-		dependencies = { "folke/snacks.nvim" },
-		config = true,
-		keys = {
-			{ "<leader>c", nil, desc = "AI/Claude Code" },
-			{ "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-			{ "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
-			{ "<leader>cr", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-			{ "<leader>cC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-			{ "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
-			{ "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
-			{ "<leader>cs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-			{
-				"<leader>cs",
-				"<cmd>ClaudeCodeTreeAdd<cr>",
-				desc = "Add file",
-				ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
-			},
-			-- Diff management
-			{ "<leader>ca", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-			{ "<leader>cd", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-		},
-	},
+  -- Claude Code companion
+  {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    config = true,
+    opts ={
+      focus_after_send = true,
+      open_in_current_tab = false,
+      terminal = {
+        split_width_percentage = 0.40
+      }
+    },
+    keys = {
+      { "<leader>c", nil, desc = "AI/Claude Code" },
+      { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>cr", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+      { "<leader>cC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+      { "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+      { "<leader>cs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>cs",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
+      },
+      -- Diff management
+      { "<leader>ca", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>cd", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
+  },
 
-	-- Code Companion (AI assistant)
-	{
-		"olimorris/codecompanion.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"hrsh7th/nvim-cmp",
-			"nvim-telescope/telescope.nvim",
-		},
-		config = function()
-			require("codecompanion").setup({
-				strategies = {
-					chat = {
-						adapter = "deepseek",
-					},
-					inline = {
-						adapter = "anthropic",
-					},
-					agent = {
-						adapter = "anthropic",
-					},
-				},
-				adapters = {
-					http = {
-						anthropic = function()
-							return require("codecompanion.adapters").extend("anthropic", {
-								env = {
-									api_key = "ANTHROPIC_API_KEY",
-								},
-							})
-						end,
-					},
-					acp = {
-						claude_code = function()
-							return require("codecompanion.adapters").extend("claude_code", {
-								env = {
-									CLAUDE_CODE_OAUTH_TOKEN = "my-oauth-token",
-								},
-							})
-						end,
-					},
-				},
-			})
-		end,
-	},
+  -- companion plugin with claude code 
+  {
+  "pittcat/claude-fzf.nvim",
+  dependencies = {
+    "ibhagwan/fzf-lua",
+    "coder/claudecode.nvim"
+  },
+  opts = {
+    auto_context = true,
+    batch_size = 10,
+    -- 可选：配置键位映射（默认为空，不会占用任何按键）
+    keymaps = {
+      files = "<leader>cf",
+      grep = "<leader>cg", 
+      buffers = "<leader>cb",
+      git_files = "<leader>cgf",
+      directory_files = "<leader>cd",
+    },
+  },
+  cmd = { "ClaudeFzf", "ClaudeFzfFiles", "ClaudeFzfGrep", "ClaudeFzfBuffers", "ClaudeFzfGitFiles", "ClaudeFzfDirectory" },
+  -- 或者使用 lazy.nvim 的 keys 配置（二选一）
+  },
 
-	-- MCP Hub (Model Context Protocol Hub)
-	{
-		"ravitemer/mcphub.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		build = "npm install -g mcp-hub@latest",
-		config = function()
-			require("mcphub").setup({
-				system_prompt = function()
-					local hub = require("mcphub").get_hub_instance()
-					return hub and hub:get_active_servers_prompt() or ""
-				end,
-				-- Using function prevents requiring mcphub before it's loaded
-				custom_tools = function()
-					return {
-						require("mcphub.extensions.avante").mcp_tool(),
-					}
-				end,
-				extensions = {
-					avante = {
-						make_slash_commands = true, -- make /slash commands from MCP server prompts
-					},
-				},
-			})
-		end,
-	},
+{
+  'pittcat/claude-fzf-history.nvim',
+  dependencies = { 'ibhagwan/fzf-lua' },
+  config = function()
+    require('claude-fzf-history').setup()
+  end,
+  cmd = { 'ClaudeHistory', 'ClaudeHistoryDebug' },
+},
 
-	-- OpenCode (AI coding assistant)
-	{
-		"NickvanDyke/opencode.nvim",
-		dependencies = {
-			-- Recommended for better prompt input, and required to use `opencode.nvim`'s embedded terminal — otherwise optional
-			{ "folke/snacks.nvim", opts = { input = { enabled = true } } },
-		},
-		config = function()
-			vim.g.opencode_opts = {
-				-- Your configuration, if any — see `lua/opencode/config.lua`
-			}
+  -- OpenCode.nvim (AI coding assistant)
+  {
+    "sudo-tee/opencode.nvim",
+    config = function()
+      require("opencode").setup({
+        preferred_completion = 'nvim-cmp',
+      })
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          anti_conceal = { enabled = false },
+          file_types = { 'markdown', 'opencode_output' },
+        },
+        ft = { 'markdown', 'Avante', 'copilot-chat', 'opencode_output' },
+      },
+      'saghen/blink.cmp',
+      'folke/snacks.nvim',
+    },
+  },
 
-			-- Required for `opts.auto_reload`
-			vim.opt.autoread = true
+  -- Code Companion (AI assistant)
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "anthropic",
+          },
+          inline = {
+            adapter = "anthropic",
+          },
+          agent = {
+            adapter = "anthropic",
+          },
+        },
+        adapters = {
+          http = {
+            anthropic = function()
+              return require("codecompanion.adapters").extend("anthropic", {
+                env = {
+                  api_key = "ANTHROPIC_API_KEY",
+                },
+              })
+            end,
+          },
+        },
+      })
+    end,
+  },
 
-			-- Recommended keymaps
-			vim.keymap.set("n", "<leader>ot", function()
-				require("opencode").toggle()
-			end, { desc = "Toggle opencode" })
-			vim.keymap.set("n", "<leader>oA", function()
-				require("opencode").ask()
-			end, { desc = "Ask opencode" })
-			vim.keymap.set("n", "<leader>oa", function()
-				require("opencode").ask("@cursor: ")
-			end, { desc = "Ask opencode about this" })
-			vim.keymap.set("v", "<leader>oa", function()
-				require("opencode").ask("@selection: ")
-			end, { desc = "Ask opencode about selection" })
-			vim.keymap.set("n", "<leader>on", function()
-				require("opencode").command("session_new")
-			end, { desc = "New opencode session" })
-			vim.keymap.set("n", "<leader>oy", function()
-				require("opencode").command("messages_copy")
-			end, { desc = "Copy last opencode response" })
-			vim.keymap.set("n", "<S-C-u>", function()
-				require("opencode").command("messages_half_page_up")
-			end, { desc = "Messages half page up" })
-			vim.keymap.set("n", "<S-C-d>", function()
-				require("opencode").command("messages_half_page_down")
-			end, { desc = "Messages half page down" })
-			vim.keymap.set({ "n", "v" }, "<leader>os", function()
-				require("opencode").select()
-			end, { desc = "Select opencode prompt" })
+  -- MCP Hub (Model Context Protocol Hub)
+  {
+    "ravitemer/mcphub.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest",
+    config = function()
+      require("mcphub").setup({
+            system_prompt = function()
+        local hub = require("mcphub").get_hub_instance()
+        return hub and hub:get_active_servers_prompt() or ""
+        end,
+    -- Using function prevents requiring mcphub before it's loaded
+    custom_tools = function()
+        return {
+            require("mcphub.extensions.avante").mcp_tool(),
+        }
+    end,
+    extensions = {
+        avante = {
+            make_slash_commands = true, -- make /slash commands from MCP server prompts
+        }
+    }
+      })
+    end,
+  },
 
-			-- Example: keymap for custom prompt
-			vim.keymap.set("n", "<leader>oe", function()
-				require("opencode").prompt("Explain @cursor and its context")
-			end, { desc = "Explain this code" })
-		end,
-	},
-
-	-- Avante (AI-powered coding assistant)
-	{
-		"yetone/avante.nvim",
-		event = "VeryLazy",
-		lazy = false,
-		version = false,
-		opts = {
-			provider = "deepseek",
-			providers = {
-				claude = {
-					endpoint = "https://api.anthropic.com",
-					model = "claude-sonnet-4",
-					extra_request_body = {
-						temperature = 0,
-						max_tokens = 128000,
-					},
-				},
-				openrouter = {
-					__inherited_from = "openai",
-					endpoint = "https://openrouter.ai/api/v1",
-					api_key_name = "OPENROUTER_API_KEY",
-					model = "anthropic/claude-sonnet-4",
-				},
-				deepseek = {
-					__inherited_from = "openai",
-					api_key_name = "DEEPSEEK_API_KEY",
-					endpoint = "https://api.deepseek.com",
-					model = "deepseek-chat",
-				},
-				deepseek_r = {
-					__inherited_from = "openai",
-					api_key_name = "DEEPSEEK_API_KEY",
-					endpoint = "https://api.deepseek.com",
-					model = "deepseek-reasoner",
-				},
-			},
-			acp_providers = {
-				["gemini-cli"] = {
-					command = "gemini",
-					args = { "--experimental-acp" },
-					env = {
-						NODE_NO_WARNINGS = "1",
-						GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
-					},
-				},
-				["claude-code"] = {
-					command = "npx",
-					args = { "acp-claude-code" },
-					env = {
-						NODE_NO_WARNINGS = "1",
-						ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
-						ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE = "/home/linuxbrew/.linuxbrew/bin/claude",
-						ACP_PERMISSION_MODE = "acceptEdits",
-					},
-				},
-			},
-			behaviour = {
-				auto_suggestions = false,
-				auto_set_highlight_group = true,
-				auto_set_keymaps = true,
-				auto_apply_diff_after_generation = false,
-				support_paste_from_clipboard = false,
-				auto_approve_tool_permissions = false,
-			},
-			mappings = {
-				diff = {
-					ours = "co",
-					theirs = "ct",
-					all_theirs = "ca",
-					both = "cb",
-					cursor = "cc",
-					next = "]x",
-					prev = "[x",
-				},
-				suggestion = {
-					accept = "<M-l>",
-					next = "<M-]>",
-					prev = "<M-[>",
-					dismiss = "<C-]>",
-				},
-				jump = {
-					next = "]]",
-					prev = "[[",
-				},
-				submit = {
-					normal = "<CR>",
-					insert = "<C-s>",
-				},
-			},
-			hints = { enabled = true },
-			windows = {
-				position = "right",
-				wrap = true,
-				width = 30,
-				sidebar_header = {
-					align = "center",
-					rounded = true,
-				},
-			},
-			highlights = {
-				diff = {
-					current = "DiffText",
-					incoming = "DiffAdd",
-				},
-			},
-		},
-		build = "make",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"stevearc/dressing.nvim",
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"zbirenbaum/copilot.lua",
-			{
-				"HakonHarnes/img-clip.nvim",
-				event = "VeryLazy",
-				opts = {
-					default = {
-						embed_image_as_base64 = false,
-						prompt_for_file_name = false,
-						drag_and_drop = {
-							insert_mode = true,
-						},
-						use_absolute_path = true,
-					},
-				},
-			},
-			{
-				"MeanderingProgrammer/render-markdown.nvim",
-				opts = {
-					file_types = { "markdown", "Avante" },
-				},
-				ft = { "markdown", "Avante" },
-			},
-		},
-	},
+  {
+  "folke/sidekick.nvim",
+  opts = {
+    -- add any options here
+    cli = {
+      mux = {
+        backend = "zellij",
+        enabled = true,
+      },
+    },
+  },
+  keys = {
+    {
+      "<tab>",
+      function()
+        -- if there is a next edit, jump to it, otherwise apply it if any
+        if not require("sidekick").nes_jump_or_apply() then
+          return "<Tab>" -- fallback to normal tab
+        end
+      end,
+      expr = true,
+      desc = "Goto/Apply Next Edit Suggestion",
+    },
+    {
+      "<c-.>",
+      function()
+        require("sidekick.cli").focus()
+      end,
+      desc = "Sidekick Switch Focus",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>sa",
+      function()
+        require("sidekick.cli").toggle({ focus = true })
+      end,
+      desc = "Sidekick Toggle CLI",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>sc",
+      function()
+        require("sidekick.cli").toggle({ name = "claude", focus = true })
+      end,
+      desc = "Sidekick Claude Toggle",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>sg",
+      function()
+        require("sidekick.cli").toggle({ name = "grok", focus = true })
+      end,
+      desc = "Sidekick Grok Toggle",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>sp",
+      function()
+        require("sidekick.cli").select_prompt()
+      end,
+      desc = "Sidekick Ask Prompt",
+      mode = { "n", "v" },
+    },
+  },
+},
+  -- Avante (AI-powered coding assistant)
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false,
+    opts = {
+      provider = "claude",
+      auto_suggestions_provider = "claude",
+      acp_providers = {
+        ["gemini-cli"] = {
+          command = "gemini",
+          args = { "--experimental-acp" },
+          env = {
+            NODE_NO_WARNINGS = "1",
+            GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+          },
+        },
+    ["claude-code"] = {
+          command = "npx",
+          args = { "acp-claude-code" },
+          env = {
+            NODE_NO_WARNINGS = "1",
+            ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+            ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE="/home/linuxbrew/.linuxbrew/bin/claude",
+            ACP_PERMISSION_MODE="acceptEdits"
+          },
+        },
+  },
+      behaviour = {
+        auto_suggestions = false,
+        auto_set_highlight_group = true,
+        auto_set_keymaps = true,
+        auto_apply_diff_after_generation = false,
+        support_paste_from_clipboard = false,
+      },
+      mappings = {
+        diff = {
+          ours = "co",
+          theirs = "ct",
+          all_theirs = "ca",
+          both = "cb",
+          cursor = "cc",
+          next = "]x",
+          prev = "[x",
+        },
+        suggestion = {
+          accept = "<M-l>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
+        },
+        jump = {
+          next = "]]",
+          prev = "[[",
+        },
+        submit = {
+          normal = "<CR>",
+          insert = "<C-s>",
+        },
+      },
+      hints = { enabled = true },
+      windows = {
+        position = "right",
+        wrap = true,
+        width = 30,
+        sidebar_header = {
+          align = "center",
+          rounded = true,
+        },
+      },
+      highlights = {
+        diff = {
+          current = "DiffText",
+          incoming = "DiffAdd",
+        },
+      },
+    },
+    build = "make",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "zbirenbaum/copilot.lua",
+      {
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
 }

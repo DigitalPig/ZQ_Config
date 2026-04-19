@@ -11,6 +11,8 @@ return {
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
+      "zbirenbaum/copilot-cmp", -- Added for Copilot integration
+      --"kristijanhusak/vim-dadbod-completion", -- Added for database completion
     },
     config = function()
       local cmp = require("cmp")
@@ -35,7 +37,7 @@ return {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
           }),
-          ["<CR>"] = cmp.mapping.confirm({ select = false }),
+          ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Updated from diff
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
@@ -58,12 +60,13 @@ return {
           end, { "i", "s" }),
         }),
         sources = {
-          { name = "copilot" },
+          { name = "copilot" }, -- Prioritize Copilot suggestions
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "latex_symbols" },
           { name = "buffer" },
           { name = "path" },
+          { name = "vim-dadbod-completion" }, -- Database completion
         },
         formatting = {
           fields = { "kind", "abbr", "menu" },
@@ -103,6 +106,7 @@ return {
               luasnip = "[Snippet]",
               buffer = "[Buffer]",
               path = "[Path]",
+              ["vim-dadbod-completion"] = "[DB]",
             })[entry.source.name]
             return vim_item
           end,
@@ -149,7 +153,8 @@ return {
       -- Custom snippet settings
       luasnip.config.set_config({
         history = true,
-        updateevents = "TextChanged,TextChangedI",
+        -- Use InsertLeave instead of TextChanged to avoid LSP sync race conditions
+        updateevents = "InsertLeave",
         enable_autosnippets = true,
         ext_opts = {
           [require("luasnip.util.types").choiceNode] = {

@@ -6,6 +6,8 @@ return {
     priority = 1000,
     config = function()
       vim.cmd("colorscheme tokyonight")
+      vim.opt.fillchars:append({ vert = "┃" })
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#7aa2f7", bold = true })
     end,
   },
 
