@@ -65,6 +65,9 @@ autocmd("TermOpen", {
     vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], map_opts)
     vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], map_opts)
     vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], map_opts)
+end,
+})
+
 -- Database completion setup for SQL files
 autocmd("FileType", {
   pattern = { "sql", "mysql", "plsql" },

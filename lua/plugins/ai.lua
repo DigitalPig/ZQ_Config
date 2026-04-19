@@ -1,4 +1,25 @@
 return {
+  -- Pi coding agent (local plugin)
+  {
+    dir = vim.fn.expand("~/Codes/pi-neovim"),
+    name = "pi-neovim",
+    config = function()
+      require("pi").setup({
+        terminal = {
+          position  = "right",
+          width_pct = 0.38,
+        },
+      })
+    end,
+    keys = {
+      { "<leader>pit", "<cmd>Pi<cr>",         desc = "Pi: toggle",        mode = { "n", "t" } },
+      { "<leader>pif", "<cmd>PiFocus<cr>",    desc = "Pi: focus",         mode = { "n", "t" } },
+      { "<leader>pir", "<cmd>PiResume<cr>",   desc = "Pi: resume session"                     },
+      { "<leader>pic", "<cmd>PiContinue<cr>", desc = "Pi: continue last"                      },
+      { "<leader>pid", "<cmd>PiDiff<cr>",     desc = "Pi: show diff"                          },
+      { "<leader>pis", "<cmd>PiStatus<cr>",   desc = "Pi: status"                             },
+    },
+  },
   -- GitHub Copilot
   {
     "zbirenbaum/copilot.lua",
