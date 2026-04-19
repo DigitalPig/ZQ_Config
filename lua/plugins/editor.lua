@@ -333,32 +333,7 @@ return {
     end,
   },
 
-  -- Dash documentation (added from nvimrc diff)
-  {
-    "mrjones2014/dash.nvim",
-    build = "make install",
-    config = function()
-      require('dash').setup({
-        search_engine = 'google',
-        debounce = 0,
-        file_type_keywords = {
-          dashboard = false,
-          NvimTree = false,
-          TelescopePrompt = false,
-          terminal = false,
-          packer = false,
-          fzf = false,
-          javascript = { 'javascript', 'nodejs' },
-          typescript = { 'typescript', 'javascript', 'nodejs' },
-          typescriptreact = { 'typescript', 'javascript', 'react' },
-          javascriptreact = { 'javascript', 'react' },
-          python = {'py', 'pd', 'np', 'sns', 'sklearn', 'jax', 'pl', 'scipy', 'lgb'},
-        },
-      })
-    end,
-  },
-
-  -- Formatting (added from nvimrc diff)
+ -- Formatting (added from nvimrc diff)
   {
     "stevearc/conform.nvim",
     config = function()
